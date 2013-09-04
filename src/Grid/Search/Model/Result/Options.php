@@ -3,6 +3,7 @@
 namespace Grid\Search\Model\Result;
 
 use Zork\Stdlib\OptionsTrait;
+use Zork\Stdlib\PropertiesTrait;
 
 /**
  * Search options
@@ -12,7 +13,8 @@ use Zork\Stdlib\OptionsTrait;
 class Options
 {
 
-    use OptionsTrait;
+    use OptionsTrait,
+        PropertiesTrait;
 
     /**
      * @const int
