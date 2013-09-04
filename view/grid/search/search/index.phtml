@@ -30,8 +30,7 @@ $this->form
     $relevance  = round( $result->rank * 100 ); ?>
 
             <div class="search-result">
-                <div class="search-result-relevance relevance-<?=
-                     str_pad( round( $relevance / 10 ), 2, '0', STR_PAD_LEFT ) ?>"
+                <div class="search-result-relevance relevance-<?= round( $relevance / 10 ) ?>"
                      data-relevance="<?= $relevance ?>">
                     <?= $relevance ?>%
                 </div>
