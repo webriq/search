@@ -13,6 +13,7 @@ use Zend\Stdlib\Hydrator\HydratorInterface;
 use Zork\Model\MapperAwareInterface;
 use Zork\Model\DbAdapterAwareTrait;
 use Zork\Model\DbAdapterAwareInterface;
+use Zork\Model\Mapper\DbAware\DbSchemaAwareTrait;
 use Zork\Model\Mapper\DbAware\DbSchemaAwareInterface;
 use Zork\Model\Mapper\ReadListMapperInterface;
 use Zork\Iterator\CallbackMapIterator;
