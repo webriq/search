@@ -46,7 +46,8 @@ $this->form
                     ?></a>
                 </p>
                 <div class="search-result-headline">
-                    <?= htmlspecialchars( $result->headline, ENT_QUOTES ) ?>
+                    <?= $result->headline ?>
+
                 </div>
             </div>
 <?php endforeach ?>
