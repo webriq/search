@@ -128,9 +128,9 @@ return array(
                         'type'      => 'Zork\Form\Element\Checkbox',
                         'name'      => 'all',
                         'options'   => array(
-                            'label'         => '',
-                            'required'      => true,
-                            'label_enabled' => 'search.form.all',
+                            'label'         => false,
+                            'required'      => false,
+                            'label_enable'  => 'search.form.all',
                         ),
                     ),
                 ),
@@ -139,8 +139,8 @@ return array(
                         'type'      => 'Zork\Form\Element\Select',
                         'name'      => 'items',
                         'options'   => array(
-                            'label'     => '',
-                            'required'  => true,
+                            'label'     => 'search.form.items',
+                            'required'  => false,
                             'options'   => array(
                                 5   => array( 'label' => 5,  'value' => 5  ),
                                 10  => array( 'label' => 10, 'value' => 10 ),

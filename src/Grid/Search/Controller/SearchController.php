@@ -27,6 +27,8 @@ class SearchController extends AbstractSearchController
         $options = $items->getValueOptions();
         $hasit   = false;
 
+        $this->paragraphLayout();
+
         foreach ( $options as $option )
         {
             if ( is_array( $option ) )
