@@ -1,0 +1,46 @@
+{
+    "name": "gridguyz/search",
+    "type": "gridguyz-module",
+    "description": "Search module for Gridguyz CMS",
+    "license": "CC-BY-SA-3.0",
+    "keywords": [
+        "gridguyz",
+        "module",
+        "search"
+    ],
+    "homepage": "http://gridguyz.com/",
+    "authors": [
+        {
+            "name": "David Pozsar",
+            "email": "david.pozsar@megaweb.hu",
+            "homepage": "http://gridguyz.com/",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "email": "dev@megaweb.hu",
+        "source": "https://github.com/gridguyz/search"
+    },
+    "require": {
+        "php": ">=5.4",
+        "gridguyz/module-installer": "*",
+        "gridguyz/core": "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Grid\\Search": "src/"
+        },
+        "classmap": [
+            "Module.php"
+        ]
+    },
+    "extra": {
+        "display-name": {
+            "en": "Search Package"
+        },
+        "display-description": "",
+        "modules": {
+            "Grid\\Search": "Search"
+        }
+    }
+}
