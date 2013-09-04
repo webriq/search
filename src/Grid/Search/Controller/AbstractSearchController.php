@@ -69,7 +69,7 @@ abstract class AbstractSearchController extends AbstractActionController
     protected function getSuggestions()
     {
         $locale = (string) $this->locale();
-        $query  = $this->param( 'query', '' );
+        $query  = $this->param( 'query', $this->param( 'term', '' ) );
         $type   = $this->param( 'type', '%' ) ?: '%';
         $all    = (bool) $this->param( 'all', false );
         $limit  = (int)  $this->param( 'limit', 10 ) ?: 10;
