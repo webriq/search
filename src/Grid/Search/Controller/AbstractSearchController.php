@@ -2,7 +2,7 @@
 
 namespace Grid\Search\Controller;
 
-use Grid\Search\Model\Query;
+use Grid\Search\Query;
 use Zend\Mvc\Controller\AbstractActionController;
 
 /**
