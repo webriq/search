@@ -56,8 +56,9 @@ abstract class AbstractSearchController extends AbstractActionController
             'items'     => $items,
             'index'     => $index,
             'query'     => $parsed->toRepresentation(),
-            'count'     => $model->searchCount( $where ),
-            'results'   => $model->searchResults( $where, $items, $index ),
+            'count'     => $count = $model->searchCount( $where ),
+            'results'   => $count < 1 ? array()
+                        : $model->searchResults( $where, $items, $index ),
         );
     }
 
