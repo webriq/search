@@ -18,6 +18,7 @@ use Zork\Model\Mapper\DbAware\DbSchemaAwareInterface;
 use Zork\Model\Mapper\ReadListMapperInterface;
 use Zork\Iterator\CallbackMapIterator;
 use Zend\Authentication\AuthenticationService;
+use Grid\User\Model\Permissions\Model as PermissionModel;
 
 /**
  * Mapper
@@ -40,6 +41,11 @@ class Mapper implements HydratorInterface,
      * @var \Zend\Db\Sql\Sql
      */
     private $sql;
+
+    /**
+     * @var PermissionModel
+     */
+    private $permissions;
 
     /**
      * @var Options
@@ -147,11 +153,15 @@ class Mapper implements HydratorInterface,
     /**
      * Constructor
      *
-     * @param   Options     $searchOptions
-     * @param   Structure   $structurePrototype
+     * @param   PermissionModel $userPermissionsModel
+     * @param   Options         $searchOptions
+     * @param   Structure       $structurePrototype
      */
-    public function __construct( Options $searchOptions = null, Structure $structurePrototype = null )
+    public function __construct( PermissionModel    $userPermissionsModel,
+                                 Options            $searchOptions      = null,
+                                 Structure          $structurePrototype = null )
     {
+        $this->permissions = $userPermissionsModel;
         $this->setSearchOptions( $searchOptions ?: new Options )
              ->setStructurePrototype( $structurePrototype ?: new Structure );
     }
@@ -176,11 +186,11 @@ class Mapper implements HydratorInterface,
     }
 
     /**
-     * Get user id & group id
+     * Get user id, group id & is admin
      *
      * @return  array
      */
-    protected function getUserIdAndGroupId()
+    protected function getUserData()
     {
         $auth = new AuthenticationService();
 
@@ -192,10 +202,15 @@ class Mapper implements HydratorInterface,
             return array(
                 $identity->id,
                 $identity->groupId,
+                $this->permissions->isAllowed(
+                    'search.all',
+                    'view',
+                    $identity
+                )
             );
         }
 
-        return array( null, null );
+        return array( null, null, false );
     }
 
     /**
@@ -364,7 +379,7 @@ class Mapper implements HydratorInterface,
             return 0;
         }
 
-        list( $userId, $groupId ) = $this->getUserIdAndGroupId();
+        list( $userId, $groupId, $isAdmin ) = $this->getUserData();
 
         return $this->sql()
                     ->call(
@@ -373,9 +388,10 @@ class Mapper implements HydratorInterface,
                             (string) $locale,
                             (string) $query,
                             (string) $type,
-                            $all ? 't' : 'f',
+                            $all     ? 't' : 'f',
                             (int)    $userId,
                             (int)    $groupId,
+                            $isAdmin ? 't' : 'f',
                         )
                     );
     }
@@ -398,7 +414,7 @@ class Mapper implements HydratorInterface,
             return array();
         }
 
-        list( $userId, $groupId ) = $this->getUserIdAndGroupId();
+        list( $userId, $groupId, $isAdmin ) = $this->getUserData();
 
         $options = $this->parseOptions( $options );
         $result  = $this->sql()
@@ -408,9 +424,10 @@ class Mapper implements HydratorInterface,
                                 (string) $locale,
                                 (string) $query,
                                 (string) $type,
-                                $all ? 't' : 'f',
+                                $all     ? 't' : 'f',
                                 (int)    $userId,
                                 (int)    $groupId,
+                                $isAdmin ? 't' : 'f',
                                 (int)    $limit  ?: 10,
                                 (int)    $offset ?: 0,
                                 $options->coverDensity ? 't' : 'f',
@@ -455,7 +472,7 @@ class Mapper implements HydratorInterface,
             return array();
         }
 
-        list( $userId, $groupId ) = $this->getUserIdAndGroupId();
+        list( $userId, $groupId, $isAdmin ) = $this->getUserData();
 
         $result = $this->sql()
                        ->call(
@@ -464,9 +481,10 @@ class Mapper implements HydratorInterface,
                                (string) $locale,
                                (string) $query,
                                (string) $type,
-                               $all ? 't' : 'f',
+                               $all     ? 't' : 'f',
                                (int)    $userId,
                                (int)    $groupId,
+                               $isAdmin ? 't' : 'f',
                                (int)    $limit  ?: 10,
                            ),
                            FunctionCall::MODE_RESULT_SET

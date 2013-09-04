@@ -165,6 +165,7 @@ CREATE OR REPLACE FUNCTION "search_result"(
     "p_all"                 BOOLEAN             DEFAULT FALSE,
     "p_user_id"             INTEGER             DEFAULT 0,
     "p_group_id"            INTEGER             DEFAULT 0,
+    "p_is_admin"            BOOLEAN             DEFAULT FALSE,
     "p_limit"               INTEGER             DEFAULT 10,
     "p_offset"              INTEGER             DEFAULT 0,
     "p_cover_density"       BOOLEAN             DEFAULT TRUE,
@@ -245,7 +246,7 @@ BEGIN
                              "title" || '' '' ||
                              "keywords" || '' '' ||
                              "description" || '' '' ||
-                             "content", "query", $14
+                             "content", "query", $15
                          ) AS "headline",
                          CAST( ( 1 - ( 1 - "rank" ) ^ 2 ) AS FLOAT ) AS "rank"
                     FROM (
@@ -257,7 +258,7 @@ BEGIN
                                 "keywords",
                                 "description",
                                 "content",
-                                %s( ARRAY[$12, $11, $10, $9]::float4[], "vector", "query", $13 ) AS "rank",
+                                %s( ARRAY[$13, $12, $11, $10]::float4[], "vector", "query", $14 ) AS "rank",
                                 "query"
                            FROM "search"
                      INNER JOIN "search_content"
@@ -265,16 +266,20 @@ BEGIN
                                 "_common"."search_to_query"( $1, $2 ) AS "query"
                           WHERE ( $4 OR "locale" IN ( $1, SUBSTRING( $1 FOR 2 ) ) )
                             AND "type" LIKE $3
-                            AND ( "published"
-                               OR ( ( "publishedFrom" IS NULL OR "publishedFrom" < CURRENT_TIMESTAMP )
-                                AND ( "publishedTo"   IS NULL OR "publishedTo"   > CURRENT_TIMESTAMP ) ) )
-                            AND ( "allAccess"
-                               OR $6 = ANY ( "accessGroups" )
-                               OR $5 = ANY ( "accessUsers" ) )
+                            AND ( $7 OR ( (
+                                    "published" OR (
+                                            ( "publishedFrom" IS NULL OR "publishedFrom" < CURRENT_TIMESTAMP )
+                                        AND ( "publishedTo"   IS NULL OR "publishedTo"   > CURRENT_TIMESTAMP )
+                                    )
+                                ) AND (
+                                        "allAccess"
+                                     OR $6 = ANY ( "accessGroups" )
+                                     OR $5 = ANY ( "accessUsers" )
+                                ) ) )
                             AND "vector" @@ "query"
                        ORDER BY "rank" DESC
-                          LIMIT $7
-                         OFFSET $8
+                          LIMIT $8
+                         OFFSET $9
                     ) AS "search_result_tmp"
                 ', "v_rank_function" )
           USING "p_locale",             -- $1
@@ -283,14 +288,15 @@ BEGIN
                 "p_all",                -- $4
                 "v_user_id",            -- $5
                 "v_group_id",           -- $6
-                "p_limit",              -- $7
-                "p_offset",             -- $8
-                "p_weight_title",       -- $9
-                "p_weight_keywords",    -- $10
-                "p_weight_description", -- $11
-                "p_weight_content",     -- $12
-                "v_normalization",      -- $13
-                format(                 -- $14
+                "p_is_admin",           -- $7
+                "p_limit",              -- $8
+                "p_offset",             -- $9
+                "p_weight_title",       -- $10
+                "p_weight_keywords",    -- $11
+                "p_weight_description", -- $12
+                "p_weight_content",     -- $13
+                "v_normalization",      -- $14
+                format(                 -- $15
                     'StartSel=%I,StopSel=%I,'           ||
                     'MaxWords=%s,MinWords=%s,'          ||
                     'ShortWord=%s,HighlightAll=FALSE,'  ||
@@ -302,7 +308,7 @@ BEGIN
                     "p_short_word",
                     "p_max_fragments",
                     "p_fragment_delimiter"
-                );                      -- $14
+                );                      -- $15
 
 END $$;
 
@@ -316,7 +322,8 @@ CREATE OR REPLACE FUNCTION "search_result_count"(
     "p_type_like"           CHARACTER VARYING   DEFAULT '%',
     "p_all"                 BOOLEAN             DEFAULT FALSE,
     "p_user_id"             INTEGER             DEFAULT 0,
-    "p_group_id"            INTEGER             DEFAULT 0
+    "p_group_id"            INTEGER             DEFAULT 0,
+    "p_is_admin"            BOOLEAN             DEFAULT FALSE
 )
      RETURNS INTEGER
       STABLE
@@ -353,12 +360,16 @@ INNER JOIN "search_content"
            "_common"."search_to_query"( "p_locale", "p_query" ) AS "query"
      WHERE ( "p_all" OR "locale" IN ( "p_locale", SUBSTRING( "p_locale" FOR 2 ) ) )
        AND "type" LIKE "v_type_like"
-       AND ( "published"
-          OR ( ( "publishedFrom" IS NULL OR "publishedFrom" < CURRENT_TIMESTAMP )
-           AND ( "publishedTo"   IS NULL OR "publishedTo"   > CURRENT_TIMESTAMP ) ) )
-       AND ( "allAccess"
-          OR "v_group_id" = ANY ( "accessGroups" )
-          OR "v_user_id"  = ANY ( "accessUsers" ) )
+       AND ( "p_is_admin" OR ( (
+               "published" OR (
+                       ( "publishedFrom" IS NULL OR "publishedFrom" < CURRENT_TIMESTAMP )
+                   AND ( "publishedTo"   IS NULL OR "publishedTo"   > CURRENT_TIMESTAMP )
+               )
+           ) AND (
+                   "allAccess"
+                OR "v_group_id" = ANY ( "accessGroups" )
+                OR "v_user_id"  = ANY ( "accessUsers" )
+           ) ) )
        AND "vector" @@ "query";
 
     RETURN "v_result";
@@ -376,6 +387,7 @@ CREATE OR REPLACE FUNCTION "search_suggestion"(
     "p_all"                 BOOLEAN             DEFAULT FALSE,
     "p_user_id"             INTEGER             DEFAULT 0,
     "p_group_id"            INTEGER             DEFAULT 0,
+    "p_is_admin"            BOOLEAN             DEFAULT FALSE,
     "p_limit"               INTEGER             DEFAULT 10,
     "p_wordchars"           CHARACTER VARYING   DEFAULT '[:alnum:]''-'
 )
@@ -429,12 +441,16 @@ BEGIN
                      ON "search_content"."id" = "search"."searchContentId"
                   WHERE ( "p_all" OR "locale" IN ( "p_locale", SUBSTRING( "p_locale" FOR 2 ) ) )
                     AND "type" LIKE "v_type_like"
-                    AND ( "published"
-                       OR ( ( "publishedFrom" IS NULL OR "publishedFrom" < CURRENT_TIMESTAMP )
-                        AND ( "publishedTo"   IS NULL OR "publishedTo"   > CURRENT_TIMESTAMP ) ) )
-                    AND ( "allAccess"
-                       OR "v_group_id" = ANY ( "accessGroups" )
-                       OR "v_user_id"  = ANY ( "accessUsers" ) )
+                    AND ( "p_is_admin" OR ( (
+                            "published" OR (
+                                    ( "publishedFrom" IS NULL OR "publishedFrom" < CURRENT_TIMESTAMP )
+                                AND ( "publishedTo"   IS NULL OR "publishedTo"   > CURRENT_TIMESTAMP )
+                            )
+                        ) AND (
+                                "allAccess"
+                             OR "v_group_id" = ANY ( "accessGroups" )
+                             OR "v_user_id"  = ANY ( "accessUsers" )
+                        ) ) )
                GROUP BY "match"
                ORDER BY COUNT( * ) DESC
                   LIMIT "p_limit";
