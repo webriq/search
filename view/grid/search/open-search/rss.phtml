@@ -1,0 +1,36 @@
+<?php
+$domain = 'http://' . $this->domain( '' );
+$base   = $domain . '/app/' . $this->locale() . '/search';
+$params = '?query=' . urlencode( $this->query ) .
+          '&amp;items=' . ( (int) $this->items ) .
+          '&amp;page=' . ( (int) $this->page );
+echo '<', '?xml version="1.0" encoding="UTF-8"?', '>', PHP_EOL; ?>
+<rss version="2.0"
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/">
+    <channel>
+        <title><?= htmlspecialchars( $this->headTitle()->slice( 0, 1 ), ENT_QUOTES ) ?></title>
+        <link><?= $base, $params ?></link>
+        <description><?= htmlspecialchars( $this->headTitle(), ENT_QUOTES ) ?></description>
+        <opensearch:totalResults><?= (int) $this->count ?></opensearch:totalResults>
+        <opensearch:startIndex><?= (int) $this->index ?></opensearch:startIndex>
+        <opensearch:itemsPerPage><?= (int) $this->items ?></opensearch:itemsPerPage>
+        <atom:link type="application/opensearchdescription+xml"
+                   rel="search"
+                   href="<?= $base ?>/opensearch/description.xml"/>
+        <opensearch:Query role="request"
+                          searchTerms="<?= htmlspecialchars( $this->query, ENT_QUOTES ) ?>"
+                          startPage="0"/>
+<?php foreach ( $this->results as $result ): $url = $result->url; ?>
+
+        <item>
+            <title><?= htmlspecialchars( $result->title, ENT_QUOTES ) ?></title>
+            <link><?= htmlspecialchars( $url, ENT_QUOTES ) ?>"</link>
+            <description>
+                <?= htmlspecialchars( $result->headline, ENT_QUOTES ) ?>
+            </description>
+        </item>
+<?php endforeach ?>
+
+    </channel>
+</rss>

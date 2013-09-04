@@ -1,0 +1,138 @@
+<?php
+
+$this->headDefaults();
+$keywords       = '';
+$description    = '';
+$favicon        = null;
+$faviconType    = null;
+$logo           = null;
+$logoType       = null;
+
+foreach ( $this->headMeta()->getContainer() as $meta )
+{
+    if ( 'name' == $meta->type && isset( $meta->name ) )
+    {
+        switch ( strtolower( $meta->name ) )
+        {
+            case 'keywords':
+                if ( $keywords )
+                {
+                    $keywords .= ' ';
+                }
+
+                $keywords .= $meta->content;
+                break;
+
+            case 'description':
+                if ( $description )
+                {
+                    $description = trim( $description, '. ' ) . '. ';
+                }
+
+                $description .= $meta->content;
+                break;
+        }
+
+        if ( ! empty( $keywords ) && ! empty( $description ) )
+        {
+            break;
+        }
+    }
+}
+
+foreach ( $this->headLink()->getContainer() as $link )
+{
+    if ( isset( $link->rel ) && isset( $link->href ) )
+    {
+        switch ( strtolower( $link->rel ) )
+        {
+            case 'shortcut icon':
+                $favicon     = $link->href;
+                $faviconType = empty( $link->type ) ? 'image/x-icon' : $link->type;
+                break;
+
+            case 'image_src':
+            case 'apple-touch-icon':
+                $logo       = $link->href;
+                $logoType   = empty( $link->type ) ? 'image/png' : $link->type;
+                break;
+        }
+
+        if ( ! empty( $favicon ) && ! empty( $logo ) )
+        {
+            break;
+        }
+    }
+}
+
+$domain         = 'http://' . $this->domain( '' );
+$base           = $domain . '/app/' . $this->locale() . '/search';
+$keywords       = trim( preg_replace( '/[\s,;\\.]+/', ' ', $keywords ) );
+$description    = trim( preg_replace( '/\s+/', ' ', $description ) );
+
+echo '<', '?xml version="1.0" encoding="UTF-8"?', '>', PHP_EOL; ?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/"
+                       xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+    <ShortName><?= htmlspecialchars( $this->headTitle()->slice( 0, 1 ), ENT_QUOTES ) ?></ShortName>
+    <LongName><?= htmlspecialchars( $this->headTitle(), ENT_QUOTES ) ?></LongName>
+    <Tags><?= htmlspecialchars( $keywords, ENT_QUOTES ) ?></Tags>
+    <Description><?= htmlspecialchars( $description, ENT_QUOTES ) ?></Description>
+    <Developer>Gridguyz.com Development Team</Developer>
+<?php if ( ! empty( $this->contact ) ): ?>
+
+    <Contact><?= $this->contact ?></Contact>
+<?php endif ?>
+
+    <Url type="text/html"
+         pageOffset="0"
+         indexOffset="0"
+         template="<?= $base ?>?query={searchTerms}&amp;page={startPage?}&amp;items={itemsPerPage?}&amp;index={startIndex?}"/>
+    <Url type="application/x-suggestions+xml"
+         template="<?= $base ?>/opensearch/suggestions.xml?query={searchTerms}"/>
+    <Url type="application/x-suggestions+json"
+         template="<?= $base ?>/opensearch/suggestions.json?query={searchTerms}"/>
+    <Url type="application/atom+xml"
+         pageOffset="0"
+         indexOffset="0"
+         template="<?= $base ?>/opensearch/atom.xml?query={searchTerms}&amp;page={startPage?}&amp;items={itemsPerPage?}&amp;index={startIndex?}"/>
+    <Url type="application/rss+xml"
+         pageOffset="0"
+         indexOffset="0"
+         template="<?= $base ?>/opensearch/rss.xml?query={searchTerms}&amp;page={startPage?}&amp;items={itemsPerPage?}&amp;index={startIndex?}"/>
+    <Url type="application/opensearchdescription+xml"
+         rel="self"
+         template="<?= $base ?>/opensearch/description.xml"/>
+    <Query role="example"
+           searchTerms="!'unlikely to find this anywhere'" />
+<?php if ( ! empty( $favicon ) && '/' === $favicon[0] && in_array( $faviconType, array(
+        'image/icon',
+        'image/x-icon',
+        'image/vnd.microsoft.icon',
+    ) ) ): ?>
+
+    <Image width="16"
+           height="16"
+           type="<?= $faviconType ?>"><?= $domain, $favicon ?></Image>
+<?php endif ?>
+<?php if ( ! empty( $logo ) && '/' === $logo[0] ): ?>
+
+    <Image width="64"
+           height="64"
+           type="<?= $logoType ?>"><?= $domain, $this->thumbnail( $logo, array(
+               'width'      => 64,
+               'height'     => 64,
+               'method'     => 'frame',
+            // 'bgColor'    => 'ffffffff',
+           ) ) ?></Image>
+<?php endif ?>
+
+    <Attribution>
+        Search data Copyright <?= date( 'Y' ) ?>,
+        Owner(s) of <?= $domain ?>,
+        All Rights Reserved
+    </Attribution>
+    <Language><?= htmlspecialchars( $this->locale()->toIso(), ENT_QUOTES ) ?></Language>
+    <InputEncoding>UTF-8</InputEncoding>
+    <OutputEncoding>UTF-8</OutputEncoding>
+    <moz:SearchForm><?= $base ?></moz:SearchForm>
+</OpenSearchDescription>

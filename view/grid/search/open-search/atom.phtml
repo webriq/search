@@ -1,0 +1,69 @@
+<?php
+$domain = 'http://' . $this->domain( '' );
+$base   = $domain . '/app/' . $this->locale() . '/search';
+$maxp   = (int) ceil( $this->count / $this->items ) - 1;
+$paramp = '?query=' . urlencode( $this->query ) .
+          '&amp;items=' . ( (int) $this->items ) .
+          '&amp;page=';
+$params = $paramp . ( (int) $this->page );
+echo '<', '?xml version="1.0" encoding="UTF-8"?', '>', PHP_EOL; ?>
+<feed xmlns="http://www.w3.org/2005/Atom"
+      xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/">
+    <id><?= $base ?>/opensearch/atom.xml<?= $params ?></id>
+    <title><?= htmlspecialchars( $this->headTitle(), ENT_QUOTES ) ?></title>
+    <updated><?= date( DATE_ISO8601 ) ?></updated>
+    <author>
+        <name><?= htmlspecialchars( $this->headTitle()->slice( 0, 1 ), ENT_QUOTES ) ?></name>
+    </author>
+    <opensearch:totalResults><?= (int) $this->count ?></opensearch:totalResults>
+    <opensearch:startIndex><?= (int) $this->index ?></opensearch:startIndex>
+    <opensearch:itemsPerPage><?= (int) $this->items ?></opensearch:itemsPerPage>
+    <opensearch:Query role="request"
+                      searchTerms="<?= htmlspecialchars( $this->query, ENT_QUOTES ) ?>"
+                      startPage="0"/>
+    <link type="application/opensearchdescription+xml"
+          rel="search"
+          href="<?= $base ?>/opensearch/description.xml"/>
+    <link type="application/atom+xml"
+          rel="self"
+          href="<?= $base ?>/opensearch/atom.xml<?= $params ?>"/>
+    <link type="application/rss+xml"
+          rel="alternate"
+          href="<?= $base ?>/opensearch/rss.xml<?= $params ?>"/>
+    <link type="text/html"
+          rel="alternate"
+          href="<?= $base, $params ?>"/>
+    <link type="application/atom+xml"
+          rel="first"
+          href="<?= $base ?>/opensearch/rss.xml<?= $paramp, 0 ?>"/>
+<?php if ( $this->page > 0 ): ?>
+
+    <link type="application/atom+xml"
+          rel="previous"
+          href="<?= $base ?>/opensearch/rss.xml<?= $paramp, $this->page - 1 ?>"/>
+<?php endif ?>
+<?php if ( $this->page < $maxp ): ?>
+
+    <link type="application/atom+xml"
+          rel="next"
+          href="<?= $base ?>/opensearch/rss.xml<?= $paramp, $this->page + 1 ?>"/>
+<?php endif ?>
+
+    <link type="application/atom+xml"
+          rel="last"
+          href="<?= $base ?>/opensearch/rss.xml<?= $paramp, $maxp ?>"/>
+    <entry>
+<?php foreach ( $this->results as $result ): $url = $result->url; ?>
+
+        <id><?= htmlspecialchars( $url, ENT_QUOTES ) ?></id>
+        <title><?= htmlspecialchars( $result->title, ENT_QUOTES ) ?></title>
+        <link href="<?= htmlspecialchars( $url, ENT_QUOTES ) ?>"/>
+        <content type="html">
+            <div xmlns="http://www.w3.org/1999/xhtml">
+                <?= $result->headline ?>
+            </div>
+        </content>
+<?php endforeach ?>
+
+    </entry>
+</feed>

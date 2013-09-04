@@ -1,0 +1,32 @@
+<?php $this->form->prepare(); ?>
+<div class="search">
+    <?= $this->form()->openTag( $this->form ) ?>
+
+        <?= $this->form()->renderFieldset( $this->form, 'search-form-elements' ) ?>
+
+        <div class="search-results">
+<?php foreach ( $this->results as $result ):
+    $url        = $result->url;
+    $relevance  = round( $result->rank * 100 ); ?>
+
+            <div class="search-result">
+                <div class="search-result-relevance relevance-<?= str_pad( round( $relevance / 10 ), 2, '0', STR_PAD_LEFT ) ?>"
+                     data-relevance="<?= $relevance ?>">
+                    <?= $relevance ?>%
+                </div>
+                <h3 class="search-result-title">
+                    <a href="<?= $this->escapeHtmlAttr( $url ) ?>"><?= $this->escapeHtml( $result->title ) ?></a>
+                </h3>
+                <p class="search-result-link">
+                    <a href="<?= $this->escapeHtmlAttr( $url ) ?>"><?= $this->escapeHtml( $url ) ?></a>
+                </p>
+                <div class="search-result-headline">
+                    <?= htmlspecialchars( $result->headline, ENT_QUOTES ) ?>
+                </div>
+            </div>
+<?php endforeach ?>
+
+        </div>
+    <?= $this->form()->closeTag() ?>
+
+</div>

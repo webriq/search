@@ -1,0 +1,23 @@
+<?= '<', '?xml version="1.0" encoding="UTF-8"?', '>', PHP_EOL; ?>
+<SearchSuggestion>
+    <Query><?= htmlspecialchars( $this->query, ENT_QUOTES ) ?></Query>
+    <Section>
+        <Separator title="<?= htmlspecialchars( $this->query, ENT_QUOTES ) ?>"/>
+<?php foreach ( $this->suggestions as $index => $suggestion ): ?>
+
+        <Item>
+            <Text><?= htmlspecialchars( $suggestion, ENT_QUOTES ) ?></Text>
+<?php if ( isset( $this->descriptions[$index] ) ): ?>
+
+            <Description><?= htmlspecialchars( $this->descriptions[$index], ENT_QUOTES ) ?></Description>
+<?php endif ?>
+<?php if ( isset( $this->links[$index] ) ): ?>
+
+            <Url><?= htmlspecialchars( $this->links[$index], ENT_QUOTES ) ?></Url>
+<?php endif ?>
+
+        </Item>
+<?php endforeach ?>
+
+    </Section>
+</SearchSuggestion>
