@@ -109,6 +109,9 @@ return array(
                             'label'     => 'search.form.query',
                             'required'  => true,
                         ),
+                        'attributes'    => array(
+                            'data-js-type'  => 'js.search.query',
+                        ),
                     ),
                 ),
                 'type' => array(
@@ -155,7 +158,8 @@ return array(
                         'type'      => 'Zork\Form\Element\Submit',
                         'name'      => 'submit',
                         'attributes'    => array(
-                            'value'     => 'search.form.submit',
+                            'value'         => 'search.form.submit',
+                            'data-js-type'  => 'js.search.submit',
                         ),
                     ),
                 ),
