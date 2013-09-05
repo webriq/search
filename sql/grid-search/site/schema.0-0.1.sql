@@ -248,7 +248,7 @@ BEGIN
                              "description" || '' '' ||
                              "content", "query", $15
                          ) AS "headline",
-                         CAST( ( 1 - ( 1 - "rank" ) ^ 2 ) AS FLOAT ) AS "rank"
+                         CAST( SQRT( 1 - ( 1 - "rank" ) ^ 2 ) AS FLOAT ) AS "rank"
                     FROM (
                          SELECT "id",
                                 "type",
