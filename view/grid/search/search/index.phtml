@@ -20,8 +20,9 @@ $paginator = new Paginator\Paginator(
 $paginator->setItemCountPerPage( $this->items )
           ->setCurrentPageNumber( $this->page );
 
-?>
-<div class="paragraph-like search">
+$this->placeholder( 'content' )->captureStart();
+
+?><div class="paragraph-like search">
     <h3><?= $this->escapeHtml( $title ) ?></h3>
     <?= $this->form()->openTag( $this->form ) ?>
 
@@ -76,3 +77,5 @@ $paginator->setItemCountPerPage( $this->items )
     <?= $this->form()->closeTag() ?>
 
 </div>
+<?php $this->placeholder( 'content' )->captureEnd(); ?>
+<?= $this->metaContent( 'search.results', (string) $this->placeholder( 'content' ) ) ?>
