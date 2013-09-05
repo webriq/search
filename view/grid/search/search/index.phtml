@@ -1,5 +1,7 @@
 <?php
 
+use Zend\Paginator;
+
 $this->headTitle(
     $title = $this->translate( 'search.results.title', 'search' )
 );
@@ -11,6 +13,13 @@ $this->form
      ->setAttribute( 'action', '?' )
      ->prepare();
 
+$paginator = new Paginator\Paginator(
+    new Paginator\Adapter\Null( $this->count )
+);
+
+$paginator->setItemCountPerPage( $this->items )
+          ->setCurrentPageNumber( $this->page );
+
 ?>
 <div class="paragraph-like search">
     <h3><?= $this->escapeHtml( $title ) ?></h3>
@@ -19,6 +28,10 @@ $this->form
         <?= $this->form()->renderFieldset( $this->form, 'search-form-elements' ) ?>
 
 <?php if ( ! empty( $this->query ) ): ?>
+
+        <?= $paginationControl = $this->paginationControl( $paginator,
+                                                           'Sliding',
+                                                           'paginator/default' ) ?>
 
         <div class="search-results">
 <?php if ( empty( $this->results ) ):?>
@@ -54,6 +67,9 @@ $this->form
             </div>
 <?php endforeach ?>
 <?php endif ?>
+
+            <?= $paginationControl ?>
+
 <?php endif ?>
 
         </div>
