@@ -142,7 +142,7 @@ return array(
                         'type'      => 'Zork\Form\Element\Select',
                         'name'      => 'items',
                         'options'   => array(
-                            'label'     => false,
+                            'label'     => 'search.form.items',
                             'required'  => false,
                             'options'   => array(
                                 5   => array( 'label' => 5,  'value' => 5  ),
