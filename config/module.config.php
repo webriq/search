@@ -165,6 +165,59 @@ return array(
                 ),
             ),
         ),
+        'Grid\Paragraph\CreateWizard\Start' => array(
+            'elements'  => array(
+                'type'  => array(
+                    'spec'  => array(
+                        'options'   => array(
+                            'options'   => array(
+                                'functions'     => array(
+                                    'label'     => 'paragraph.type-group.functions',
+                                    'order'     => 4,
+                                    'options'   => array(
+                                        'search' => 'paragraph.type.search',
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        ),
+        'Grid\Paragraph\Meta\Edit' => array(
+            'fieldsets' => array(
+                'search' => array(
+                    'spec' => array(
+                        'name'      => 'search',
+                        'options'   => array(
+                            'label'     => 'paragraph.type.search',
+                            'required'  => false,
+                        ),
+                        'elements'  => array(
+                            'name'  => array(
+                                'spec'  => array(
+                                    'type'      => 'Zork\Form\Element\Text',
+                                    'name'      => 'name',
+                                    'options'   => array(
+                                        'label'     => 'paragraph.form.abstract.name',
+                                        'required'  => false,
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    ),
+    'modules' => array(
+        'Grid\Paragraph' => array(
+            'customizeMapForms' => array(
+                'search'        => array(
+                    'element'   => 'general',
+                ),
+            ),
+        ),
     ),
     'view_manager' => array(
         'template_map' => array(

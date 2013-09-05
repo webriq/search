@@ -1,0 +1,7 @@
+<?= $this->form(
+    $this->paragraph->getForm( $this->url(
+        'Grid\Search\Search\Index',
+        array( 'locale' => (string) $this->locale() )
+    ) ),
+    'search'
+) ?>
