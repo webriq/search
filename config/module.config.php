@@ -152,7 +152,8 @@ return array(
                             ),
                         ),
                         'attributes'    => array(
-                            'title'     => 'search.form.items',
+                            'value'         => 10,
+                            'data-js-type'  => 'js.search.items',
                         ),
                     ),
                 ),

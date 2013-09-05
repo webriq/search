@@ -68,6 +68,19 @@
                .on( "submit", addSearch );
     };
 
-    global.Zork.Search.prototype.query.isElementConstructor = true;
+    global.Zork.Search.prototype.submit.isElementConstructor = true;
+
+    /**
+     * Search items element
+     *
+     * @param {$|HtmlElement} element
+     */
+    global.Zork.Search.prototype.items = function ( element )
+    {
+        element = $( element );
+        element.attr( "title", js.core.translate( "search.form.items" ) );
+    };
+
+    global.Zork.Search.prototype.items.isElementConstructor = true;
 
 } ( window, jQuery, zork ) );
