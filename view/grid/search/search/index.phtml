@@ -23,7 +23,6 @@ $paginator->setItemCountPerPage( $this->items )
 $this->placeholder( 'content' )->captureStart();
 
 ?><div class="paragraph-like search">
-    <h3><?= $this->escapeHtml( $title ) ?></h3>
     <?= $this->form()->openTag( $this->form ) ?>
 
         <?= $this->form()->renderFieldset( $this->form, 'search-form-elements' ) ?>
