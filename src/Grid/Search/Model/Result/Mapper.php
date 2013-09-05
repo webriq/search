@@ -18,6 +18,7 @@ use Zork\Model\Mapper\DbAware\DbSchemaAwareInterface;
 use Zork\Model\Mapper\ReadListMapperInterface;
 use Zork\Iterator\CallbackMapIterator;
 use Zend\Authentication\AuthenticationService;
+use Grid\Core\Model\ContentUri\Factory as ContentUriFactory;
 use Grid\User\Model\Permissions\Model as PermissionModel;
 
 /**
@@ -51,6 +52,11 @@ class Mapper implements HydratorInterface,
      * @var Options
      */
     protected $searchOptions;
+
+    /**
+     * @var ContentUriFactory
+     */
+    protected $contentUriFactory;
 
     /**
      * Structure prototype for the mapper
@@ -153,15 +159,18 @@ class Mapper implements HydratorInterface,
     /**
      * Constructor
      *
-     * @param   PermissionModel $userPermissionsModel
-     * @param   Options         $searchOptions
-     * @param   Structure       $structurePrototype
+     * @param   ContentUriFactory   $contentUriFactory
+     * @param   PermissionModel     $userPermissionsModel
+     * @param   Options             $searchOptions
+     * @param   Structure           $structurePrototype
      */
-    public function __construct( PermissionModel    $userPermissionsModel,
+    public function __construct( ContentUriFactory  $contentUriFactory,
+                                 PermissionModel    $userPermissionsModel,
                                  Options            $searchOptions      = null,
                                  Structure          $structurePrototype = null )
     {
-        $this->permissions = $userPermissionsModel;
+        $this->contentUriFactory    = $contentUriFactory;
+        $this->permissions          = $userPermissionsModel;
         $this->setSearchOptions( $searchOptions ?: new Options )
              ->setStructurePrototype( $structurePrototype ?: new Structure );
     }
@@ -183,6 +192,30 @@ class Mapper implements HydratorInterface,
         }
 
         return $structure;
+    }
+
+    /**
+     * Get uri for a search result
+     *
+     * @param   Structure   $structure
+     * @param   bool        $absolute
+     * @return  string
+     */
+    public function getUri( Structure $structure, $absolute = false )
+    {
+        $adapter = $this->contentUriFactory
+                        ->factory( array(
+                            'type'      => $structure->type,
+                            'contentId' => $structure->contentId,
+                            'locale'    => $structure->locale,
+                        ) );
+
+        if ( empty( $adapter ) )
+        {
+            return '#error-adapterNotFound';
+        }
+
+        return $adapter->getUri( $absolute );
     }
 
     /**

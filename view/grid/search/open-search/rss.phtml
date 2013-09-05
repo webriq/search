@@ -21,11 +21,11 @@ echo '<', '?xml version="1.0" encoding="UTF-8"?', '>', PHP_EOL; ?>
         <opensearch:Query role="request"
                           searchTerms="<?= htmlspecialchars( $this->query, ENT_QUOTES ) ?>"
                           startPage="0"/>
-<?php foreach ( $this->results as $result ): $url = $result->url; ?>
+<?php foreach ( $this->results as $result ): $uri = $result->getUri( true ); ?>
 
         <item>
             <title><?= htmlspecialchars( $result->title, ENT_QUOTES ) ?></title>
-            <link><?= htmlspecialchars( $url, ENT_QUOTES ) ?>"</link>
+            <link><?= htmlspecialchars( $uri, ENT_QUOTES ) ?>"</link>
             <description>
                 <?= htmlspecialchars( $result->headline, ENT_QUOTES ) ?>
 

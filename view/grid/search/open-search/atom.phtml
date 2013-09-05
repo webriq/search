@@ -53,11 +53,11 @@ echo '<', '?xml version="1.0" encoding="UTF-8"?', '>', PHP_EOL; ?>
           rel="last"
           href="<?= $base ?>/opensearch/rss.xml<?= $paramp, $maxp ?>"/>
     <entry>
-<?php foreach ( $this->results as $result ): $url = $result->url; ?>
+<?php foreach ( $this->results as $result ): $uri = $result->getUri( true ); ?>
 
-        <id><?= htmlspecialchars( $url, ENT_QUOTES ) ?></id>
+        <id><?= htmlspecialchars( $uri, ENT_QUOTES ) ?></id>
         <title><?= htmlspecialchars( $result->title, ENT_QUOTES ) ?></title>
-        <link href="<?= htmlspecialchars( $url, ENT_QUOTES ) ?>"/>
+        <link href="<?= htmlspecialchars( $uri, ENT_QUOTES ) ?>"/>
         <content type="html">
             <div xmlns="http://www.w3.org/1999/xhtml">
                 <?= $result->headline ?>

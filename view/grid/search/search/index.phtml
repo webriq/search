@@ -42,7 +42,7 @@ $paginator->setItemCountPerPage( $this->items )
             </p>
 <?php else: ?>
 <?php foreach ( $this->results as $result ):
-    $url        = $result->url;
+    $uri        = $result->uri;
     $relevance  = round( $result->rank * 100 ); ?>
 
             <div class="search-result">
@@ -51,13 +51,13 @@ $paginator->setItemCountPerPage( $this->items )
                     <?= $relevance ?>%
                 </div>
                 <h4 class="search-result-title">
-                    <a href="<?= $this->escapeHtmlAttr( $url ) ?>"><?=
+                    <a href="<?= $this->escapeHtmlAttr( $uri ) ?>"><?=
                         $this->escapeHtml( $result->title )
                     ?></a>
                 </h4>
                 <p class="search-result-link">
-                    <a href="<?= $this->escapeHtmlAttr( $url ) ?>"><?=
-                        $this->escapeHtml( $url )
+                    <a href="<?= $this->escapeHtmlAttr( $uri ) ?>"><?=
+                        $this->escapeHtml( $uri )
                     ?></a>
                 </p>
                 <div class="search-result-headline">

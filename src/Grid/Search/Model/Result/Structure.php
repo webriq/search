@@ -70,12 +70,20 @@ class Structure extends StructureAbstract implements MapperAwareInterface
     protected $rank;
 
     /**
+     * Get uri
+     *
      * @return  string
      */
-    public function getUrl()
+    public function getUri( $absolute = false )
     {
-        // TODO
-        return '#error';
+        $mapper = $this->getMapper();
+
+        if ( empty( $mapper ) )
+        {
+            return '#error-mapperNotBound';
+        }
+
+        return $mapper->getUri( $this, $absolute );
     }
 
 }
