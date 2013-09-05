@@ -4,12 +4,15 @@ $this->headTitle(
     $title = $this->translate( 'search.results.title', 'search' )
 );
 
+$this->headLink()
+     ->appendStylesheet( '/styles/modules/Search/results.css', 'all' );
+
 $this->form
      ->setAttribute( 'action', '?' )
      ->prepare();
 
 ?>
-<div class="search">
+<div class="paragraph-like search">
     <h3><?= $this->escapeHtml( $title ) ?></h3>
     <?= $this->form()->openTag( $this->form ) ?>
 

@@ -1,0 +1,107 @@
+@charset "utf-8";
+
+.search .search-results .search-result .search-result-relevance
+{
+    color: #000;
+    float: right;
+    padding: 1ex;
+    border-radius: 50%;
+    -ms-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    text-shadow: 1px 1px 0px #fff;
+    border: 1px solid currentColor;
+    box-shadow: inset 0px 0px 1em 3px currentColor;
+}
+
+.search .search-results .search-result .search-result-relevance.relevance-0
+{
+    color: #00c;
+    font-size: 50%;
+}
+
+.search .search-results .search-result .search-result-relevance.relevance-1
+{
+    color: #04c;
+    font-size: 60%;
+}
+
+.search .search-results .search-result .search-result-relevance.relevance-2
+{
+    color: #08c;
+    font-size: 70%;
+}
+
+.search .search-results .search-result .search-result-relevance.relevance-3
+{
+    color: #0c8;
+    font-size: 80%;
+}
+
+.search .search-results .search-result .search-result-relevance.relevance-4
+{
+    color: #0c4;
+    font-size: 90%;
+}
+
+.search .search-results .search-result .search-result-relevance.relevance-5
+{
+    color: #0c0;
+    font-size: 100%;
+}
+
+.search .search-results .search-result .search-result-relevance.relevance-6
+{
+    color: #4c0;
+    font-size: 110%;
+}
+
+.search .search-results .search-result .search-result-relevance.relevance-7
+{
+    color: #8c0;
+    font-size: 120%;
+}
+
+.search .search-results .search-result .search-result-relevance.relevance-8
+{
+    color: #c80;
+    font-size: 130%;
+}
+
+.search .search-results .search-result .search-result-relevance.relevance-9
+{
+    color: #c40;
+    font-size: 140%;
+}
+
+.search .search-results .search-result .search-result-relevance.relevance-10
+{
+    color: #c00;
+    font-size: 150%;
+    font-weight: bold;
+}
+
+.search .search-results .search-result .search-result-title
+{
+    padding: 0em;
+    font-size: 120%;
+    margin: 1em 0em 0em 0em;
+}
+
+.search .search-results .search-result .search-result-link
+{
+    margin: 0em;
+    padding: 0em;
+    line-height: 1em;
+}
+
+.search .search-results .search-result .search-result-link a
+{
+    color: #082 !important;
+}
+
+.search .search-results .search-result .search-result-headline
+{
+    padding: 0em;
+    margin: 0em 0em 1em 0em;
+}
