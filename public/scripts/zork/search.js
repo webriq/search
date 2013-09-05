@@ -49,7 +49,7 @@
         element = $( element );
 
         var all = element.closest( "form" )
-                         .find( "[name=all]" ),
+                         .find( "input[type=checkbox][name=all]" ),
             source = function () {
                 return "/app/" + js.core.defaultLocale
                      + "/search/autocomplete.json"
