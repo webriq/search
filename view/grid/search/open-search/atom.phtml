@@ -10,7 +10,7 @@ echo '<', '?xml version="1.0" encoding="UTF-8"?', '>', PHP_EOL; ?>
 <feed xmlns="http://www.w3.org/2005/Atom"
       xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/">
     <id><?= $base ?>/opensearch/atom.xml<?= $params ?></id>
-    <title><?= htmlspecialchars( $this->headTitle(), ENT_QUOTES ) ?></title>
+    <title><?= htmlspecialchars( $this->headTitle()->slice( 0 ), ENT_QUOTES ) ?></title>
     <updated><?= date( DATE_ISO8601 ) ?></updated>
     <author>
         <name><?= htmlspecialchars( $this->headTitle()->slice( 0, 1 ), ENT_QUOTES ) ?></name>
@@ -61,6 +61,7 @@ echo '<', '?xml version="1.0" encoding="UTF-8"?', '>', PHP_EOL; ?>
         <content type="html">
             <div xmlns="http://www.w3.org/1999/xhtml">
                 <?= $result->headline ?>
+
             </div>
         </content>
 <?php endforeach ?>

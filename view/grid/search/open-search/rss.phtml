@@ -11,7 +11,7 @@ echo '<', '?xml version="1.0" encoding="UTF-8"?', '>', PHP_EOL; ?>
     <channel>
         <title><?= htmlspecialchars( $this->headTitle()->slice( 0, 1 ), ENT_QUOTES ) ?></title>
         <link><?= $base, $params ?></link>
-        <description><?= htmlspecialchars( $this->headTitle(), ENT_QUOTES ) ?></description>
+        <description><?= htmlspecialchars( $this->headTitle()->slice( 0 ), ENT_QUOTES ) ?></description>
         <opensearch:totalResults><?= (int) $this->count ?></opensearch:totalResults>
         <opensearch:startIndex><?= (int) $this->index ?></opensearch:startIndex>
         <opensearch:itemsPerPage><?= (int) $this->items ?></opensearch:itemsPerPage>
@@ -28,6 +28,7 @@ echo '<', '?xml version="1.0" encoding="UTF-8"?', '>', PHP_EOL; ?>
             <link><?= htmlspecialchars( $url, ENT_QUOTES ) ?>"</link>
             <description>
                 <?= htmlspecialchars( $result->headline, ENT_QUOTES ) ?>
+
             </description>
         </item>
 <?php endforeach ?>

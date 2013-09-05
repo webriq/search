@@ -74,7 +74,7 @@ echo '<', '?xml version="1.0" encoding="UTF-8"?', '>', PHP_EOL; ?>
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/"
                        xmlns:moz="http://www.mozilla.org/2006/browser/search/">
     <ShortName><?= htmlspecialchars( $this->headTitle()->slice( 0, 1 ), ENT_QUOTES ) ?></ShortName>
-    <LongName><?= htmlspecialchars( $this->headTitle(), ENT_QUOTES ) ?></LongName>
+    <LongName><?= htmlspecialchars( $this->headTitle()->slice( 0 ), ENT_QUOTES ) ?></LongName>
     <Tags><?= htmlspecialchars( $keywords, ENT_QUOTES ) ?></Tags>
     <Description><?= htmlspecialchars( $description, ENT_QUOTES ) ?></Description>
     <Developer>Gridguyz.com Development Team</Developer>
