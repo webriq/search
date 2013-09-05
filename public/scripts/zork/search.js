@@ -47,9 +47,22 @@
     global.Zork.Search.prototype.query = function ( element )
     {
         element = $( element );
+
+        var all = element.closest( "form" )
+                         .find( "[name=all]" ),
+            source = function () {
+                return "/app/" + js.core.defaultLocale
+                     + "/search/autocomplete.json"
+                     + ( all.prop( "checked" ) ? '?all=1' : '' );
+            };
+
         element.autocomplete( {
             "minLength": 2,
-            "source": "/app/" + js.core.defaultLocale + "/search/autocomplete.json"
+            "source": source()
+        } );
+
+        all.on( "click change", function () {
+            element.autocomplete( "option", "source", source() );
         } );
     };
 
