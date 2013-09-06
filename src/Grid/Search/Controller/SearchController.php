@@ -83,6 +83,7 @@ class SearchController extends AbstractSearchController
     public function debugQueryAction()
     {
         $query  = $this->param( 'query' );
+        $tokens = Query\Token::lexer( $query );
         $parsed = Query\Parser::parse( $query );
         $model  = $this->getServiceLocator()
                        ->get( 'Grid\Search\Model\Result\Model' );
@@ -91,6 +92,7 @@ class SearchController extends AbstractSearchController
 
         return array(
             'query'             => $query,
+            'tokens'            => $tokens,
             'parsed'            => $parsed,
             'toRepresentation'  => $parsed->toRepresentation(),
             'toQueryString'     => $tsquery = $parsed->toQueryString(),

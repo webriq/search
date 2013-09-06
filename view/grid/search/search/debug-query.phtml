@@ -12,6 +12,19 @@
         <dd><?= $this->escapeHtml( $this->toQueryString ) ?></dd>
         <dt>Effective query</dt>
         <dd><?= $this->escapeHtml( $this->effective ) ?></dd>
+        <dt>Query tokens</dt>
+        <dd>
+            <table>
+<?php foreach ( $this->tokens as $token ): ?>
+
+                <tr>
+                    <th><?= $this->escapeHtml( $token->type )?></th>
+                    <td><?= $this->escapeHtml( $token->data )?></td>
+                </tr>
+<?php endforeach ?>
+
+            </table>
+        </dd>
         <dt>Parsed query</dt>
         <dd><pre><?php var_dump( $this->parsed ) ?></pre></dd>
     </dl>

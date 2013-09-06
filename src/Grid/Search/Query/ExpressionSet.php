@@ -48,7 +48,7 @@ class ExpressionSet implements ExpressionInterface
     /**
      * @var array
      */
-    protected $operatorToQueryString = array(
+    protected static $operatorToQueryString = array(
         self::OP_OR   => ' | ',
         self::OP_AND  => ' & ',
     );
@@ -56,7 +56,7 @@ class ExpressionSet implements ExpressionInterface
     /**
      * @var array
      */
-    protected $operatorToRepresentation = array(
+    protected static $operatorToRepresentation = array(
         self::OP_OR   => ' ',
         self::OP_AND  => ' & ',
     );
@@ -187,7 +187,7 @@ class ExpressionSet implements ExpressionInterface
 
             if ( $result )
             {
-                $result .= $this->operatorToQueryString[
+                $result .= static::$operatorToQueryString[
                     $this->operators[$index]
                 ];
             }
@@ -214,7 +214,7 @@ class ExpressionSet implements ExpressionInterface
 
             if ( $result )
             {
-                $result .= $this->operatorToRepresentation[
+                $result .= static::$operatorToRepresentation[
                     $this->operators[$index]
                 ];
             }
