@@ -2,6 +2,8 @@
 
 namespace Grid\Search\Query;
 
+use Normalizer;
+
 /**
  * Token
  *
@@ -56,6 +58,11 @@ class Token
     const CONTROL_LETTERS = '\'"!-|()';
 
     /**
+     * @const string
+     */
+    const NORMALIZATION_FORM = Normalizer::FORM_C;
+
+    /**
      * @var string
      */
     public $type;
@@ -86,7 +93,14 @@ class Token
     public static function lexer( $query )
     {
         $tokens = array();
-        $query  = static::skipWhiteSpace( (string) $query );
+        $query  = (string) $query;
+
+        if ( ! Normalizer::isNormalized( $query, static::NORMALIZATION_FORM ) )
+        {
+            $query = Normalizer::normalize( $query, static::NORMALIZATION_FORM );
+        }
+
+        $query = static::skipWhiteSpace( $query );
 
         while ( ! empty( $query ) )
         {
@@ -156,7 +170,7 @@ class Token
                 default:
                     $matches = array();
 
-                    if ( preg_match( '/^[' . static::LEXEME_LETTERS . '\']+/', $query, $matches ) )
+                    if ( preg_match( '/^[' . static::LEXEME_LETTERS . '\']+/u', $query, $matches ) )
                     {
                         $match = $matches[0];
                         $query = substr( $query, strlen( $match ) );
