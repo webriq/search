@@ -109,17 +109,24 @@ class ExpressionSet implements ExpressionInterface
     /**
      * Add expressions
      *
-     * @param   array|\Traversable  $expressions
-     * @param   string              $operator
+     * @param   array|\Traversable|ExpressionInterface  $expressions
+     * @param   string                                  $operator
      * @return  ExpressionSet
      */
     public function appendExpressions( $expressions, $operator = self::OP_DEFAULT )
     {
-        foreach ( $expressions as $expression )
+        if ( $expressions instanceof ExpressionInterface )
         {
-            if ( $expression instanceof ExpressionInterface )
+            $this->appendExpression( $expressions, $operator );
+        }
+        else
+        {
+            foreach ( $expressions as $expression )
             {
-                $this->appendExpression( $expression, $operator );
+                if ( $expression instanceof ExpressionInterface )
+                {
+                    $this->appendExpression( $expression, $operator );
+                }
             }
         }
 
