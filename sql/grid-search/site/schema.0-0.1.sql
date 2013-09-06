@@ -35,7 +35,7 @@ CREATE TABLE "search"
     PRIMARY KEY ( "searchContentId", "locale" )
 );
 
-CREATE INDEX "search_data_idx" ON "search" (( "title" || ' ' || "keywords" || ' ' || "description" || ' ' || "content" ));
+CREATE INDEX "search_data_idx" ON "search" USING gist (( "title" || ' ' || "keywords" || ' ' || "description" || ' ' || "content" ));
 CREATE INDEX ON "search" USING gist ( "vector" );
 
 --------------------------------------------------------------------------------
