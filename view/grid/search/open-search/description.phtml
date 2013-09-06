@@ -86,7 +86,7 @@ echo '<', '?xml version="1.0" encoding="UTF-8"?', '>', PHP_EOL; ?>
     <Url type="text/html"
          pageOffset="1"
          indexOffset="1"
-         template="<?= $base ?>?query={searchTerms}&amp;page={startPage?}&amp;items={itemsPerPage?}&amp;index={startIndex?}"/>
+         template="<?= $base ?>?query={searchTerms}"/>
     <Url type="application/x-suggestions+xml"
          template="<?= $base ?>/opensearch/suggestions.xml?query={searchTerms}"/>
     <Url type="application/x-suggestions+json"
@@ -99,6 +99,10 @@ echo '<', '?xml version="1.0" encoding="UTF-8"?', '>', PHP_EOL; ?>
          pageOffset="1"
          indexOffset="1"
          template="<?= $base ?>/opensearch/rss.xml?query={searchTerms}&amp;page={startPage?}&amp;items={itemsPerPage?}&amp;index={startIndex?}"/>
+    <Url type="text/html"
+         pageOffset="1"
+         indexOffset="1"
+         template="<?= $base ?>?query={searchTerms}&amp;page={startPage?}&amp;items={itemsPerPage?}&amp;index={startIndex?}"/>
     <Url type="application/opensearchdescription+xml"
          rel="self"
          template="<?= $base ?>/opensearch/description.xml"/>
