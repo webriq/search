@@ -40,6 +40,11 @@ class Token
     /**
      * @const string
      */
+    const T_OPERATOR_AND = 'T_OPERATOR_AND';
+
+    /**
+     * @const string
+     */
     const T_SET_OPEN = 'T_SET_OPEN';
 
     /**
@@ -55,7 +60,7 @@ class Token
     /**
      * @const string
      */
-    const CONTROL_LETTERS = '\'"!-|()';
+    const CONTROL_LETTERS = '\'"!-|&()';
 
     /**
      * @const string
@@ -111,6 +116,11 @@ class Token
                     $query    = substr( $query, 1 );
                     break;
 
+                case '&':
+                    $tokens[] = new static( $query[0], static::T_OPERATOR_AND );
+                    $query    = substr( $query, 1 );
+                    break;
+
                 case '-':
                 case '!':
                     $tokens[] = new static( $query[0], static::T_OPERATOR_NOT );
@@ -157,15 +167,6 @@ class Token
                     $tokens[] = new static( $phrase, static::T_PHRASE );
                     $query    = substr( $query, 1 );
                     break;
-
-                case 'o':
-                case 'O':
-                    if ( isset( $query[1] ) && ( 'R' === $query[1] || 'r' === $query[1] ) )
-                    {
-                        $tokens[] = new static( substr( $query, 0, 2 ), static::T_OPERATOR_OR );
-                        $query    = substr( $query, 2 );
-                        break;
-                    }
 
                 default:
                     $matches = array();

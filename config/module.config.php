@@ -13,6 +13,16 @@ return array(
                     ),
                 ),
             ),
+            'Grid\Search\Search\DebugQuery' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'     => '/app/:locale/search/debug-query',
+                    'defaults'  => array(
+                        'controller' => 'Grid\Search\Controller\Search',
+                        'action'     => 'debug-query',
+                    ),
+                ),
+            ),
             'Grid\Search\Search\Autocomplete' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(

@@ -13,12 +13,17 @@ class ExpressionSet implements ExpressionInterface
     /**
      * @const string
      */
+    const OP_OR = 'OR';
+
+    /**
+     * @const string
+     */
     const OP_AND = 'AND';
 
     /**
      * @const string
      */
-    const OP_OR = 'OR';
+    const OP_DEFAULT = self::OP_OR;
 
     /**
      * @const string
@@ -31,9 +36,9 @@ class ExpressionSet implements ExpressionInterface
     const CLOSE = ')';
 
     /**
-     * @var string
+     * @var array
      */
-    protected $operator = self::OP_AND;
+    protected $operators = array();
 
     /**
      * @var array
@@ -41,21 +46,32 @@ class ExpressionSet implements ExpressionInterface
     protected $expressions = array();
 
     /**
+     * @var array
+     */
+    protected $operatorToQueryString = array(
+        self::OP_OR   => ' | ',
+        self::OP_AND  => ' & ',
+    );
+
+    /**
+     * @var array
+     */
+    protected $operatorToRepresentation = array(
+        self::OP_OR   => ' ',
+        self::OP_AND  => ' & ',
+    );
+
+    /**
      * Constructor
      *
      * @param   array|\Traversable  $expressions
      * @param   string              $operator
      */
-    public function __construct( $expressions = null, $operator = null )
+    public function __construct( $expressions = null, $operator = self::OP_DEFAULT )
     {
         if ( $expressions )
         {
-            $this->addExpressions( $expressions );
-        }
-
-        if ( $operator )
-        {
-            $this->setOperator( $operator );
+            $this->appendExpressions( $expressions, $operator );
         }
     }
 
@@ -63,73 +79,10 @@ class ExpressionSet implements ExpressionInterface
      * Add expression
      *
      * @param   ExpressionInterface $expression
+     * @param   string              $operator
      * @return  ExpressionSet
      */
-    public function addExpression( ExpressionInterface $expression )
-    {
-        $this->expressions[] = $expression;
-        return $this;
-    }
-
-    /**
-     * Add expressions
-     *
-     * @param   array|\Traversable  $expressions
-     * @return  ExpressionSet
-     */
-    public function addExpressions( $expressions )
-    {
-        foreach ( $expressions as $expression )
-        {
-            if ( $expression instanceof ExpressionInterface )
-            {
-                $this->addExpression( $expression );
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * Clear expressions
-     *
-     * @return ExpressionSet
-     */
-    public function clearExpressions()
-    {
-        $this->expressions = array();
-        return $this;
-    }
-
-    /**
-     * Set expressions
-     *
-     * @param   array|\Traversable  $expressions
-     * @return  ExpressionSet
-     */
-    public function setExpressions( $expressions )
-    {
-        return $this->clearExpressions()
-                    ->addExpressions( $expressions );
-    }
-
-    /**
-     * Get expressions
-     *
-     * @return  array
-     */
-    public function getExpressions()
-    {
-        return $this->expressions;
-    }
-
-    /**
-     * Set operator
-     *
-     * @param   string  $operator
-     * @return  ExpressionSet
-     */
-    public function setOperator( $operator )
+    public function appendExpression( ExpressionInterface $expression, $operator = self::OP_DEFAULT )
     {
         $operator = (string) $operator;
 
@@ -143,22 +96,58 @@ class ExpressionSet implements ExpressionInterface
             $operator = static::OP_OR;
         }
 
-        if ( static::OP_AND == $operator || static::OP_OR == $operator )
+        if ( static::OP_AND !== $operator || static::OP_OR !== $operator )
         {
-            $this->operator = $operator;
+            $operator = static::OP_DEFAULT;
+        }
+
+        $this->operators[]      = $operator;
+        $this->expressions[]    = $expression;
+        return $this;
+    }
+
+    /**
+     * Add expressions
+     *
+     * @param   array|\Traversable  $expressions
+     * @param   string              $operator
+     * @return  ExpressionSet
+     */
+    public function appendExpressions( $expressions, $operator = self::OP_DEFAULT )
+    {
+        foreach ( $expressions as $expression )
+        {
+            if ( $expression instanceof ExpressionInterface )
+            {
+                $this->appendExpression( $expression, $operator );
+            }
         }
 
         return $this;
     }
 
     /**
-     * Get operator
+     * Clear expressions
      *
-     * @return  string
+     * @return ExpressionSet
      */
-    public function getOperator()
+    public function clearExpressions()
     {
-        return $this->operator;
+        $this->operators    = array();
+        $this->expressions  = array();
+        return $this;
+    }
+
+    /**
+     * Set expressions
+     *
+     * @param   array|\Traversable  $expressions
+     * @return  ExpressionSet
+     */
+    public function setExpressions( $expressions, $operator = self::OP_DEFAULT )
+    {
+        return $this->clearExpressions()
+                    ->appendExpressions( $expressions, $operator );
     }
 
     /**
@@ -170,39 +159,30 @@ class ExpressionSet implements ExpressionInterface
     }
 
     /**
-     * Get non-empty expressions
-     *
-     * @return  array
-     */
-    protected function getNonEmptyExpressions()
-    {
-        return array_filter(
-            $this->expressions,
-            function ( ExpressionInterface $expression ) {
-                return ! $expression->isEmpty();
-            }
-        );
-    }
-
-    /**
      * @return  string
      */
     public function toQueryString()
     {
-        static $glues = array(
-            self::OP_AND  => ' & ',
-            self::OP_OR   => ' | ',
-        );
+        $result = '';
 
-        return static::OPEN . implode(
-            $glues[$this->operator],
-            array_map(
-                function ( ExpressionInterface $expression ) {
-                    return $expression->toQueryString();
-                },
-                $this->getNonEmptyExpressions()
-            )
-        ) . static::CLOSE;
+        foreach ( $this->expressions as $index => $expression )
+        {
+            if ( $expression->isEmpty() )
+            {
+                continue;
+            }
+
+            if ( $result )
+            {
+                $result .= $this->operatorToQueryString[
+                    $this->operators[$index]
+                ];
+            }
+
+            $result .= $expression->toQueryString();
+        }
+
+        return static::OPEN . $result . static::CLOSE;
     }
 
     /**
@@ -210,20 +190,26 @@ class ExpressionSet implements ExpressionInterface
      */
     public function toRepresentation()
     {
-        static $glues = array(
-            self::OP_AND  => ' ',
-            self::OP_OR   => '|',
-        );
+        $result = '';
 
-        return static::OPEN . implode(
-            $glues[$this->operator],
-            array_map(
-                function ( ExpressionInterface $expression ) {
-                    return $expression->toRepresentation();
-                },
-                $this->getNonEmptyExpressions()
-            )
-        ) . static::CLOSE;
+        foreach ( $this->expressions as $index => $expression )
+        {
+            if ( $expression->isEmpty() )
+            {
+                continue;
+            }
+
+            if ( $result )
+            {
+                $result .= $this->operatorToRepresentation[
+                    $this->operators[$index]
+                ];
+            }
+
+            $result .= $expression->toRepresentation();
+        }
+
+        return static::OPEN . $result . static::CLOSE;
     }
 
 }

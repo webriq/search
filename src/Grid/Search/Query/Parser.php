@@ -113,6 +113,7 @@ abstract class Parser
                 break;
 
             case Token::T_OPERATOR_OR:
+            case Token::T_OPERATOR_AND:
             case Token::T_LEXEME_PREFIX:
             case Token::T_SET_CLOSE:
             default:
@@ -132,7 +133,8 @@ abstract class Parser
      */
     protected static function acceptExpressionSet( array &$tokens, $skipClose = false )
     {
-        $entities = array(); // can be expression, or operator
+        $expressionSet = new ExpressionSet();
+        $nextOperator  = ExpressionSet::OP_DEFAULT;
 
         while ( ! empty( $tokens ) )
         {
@@ -140,7 +142,7 @@ abstract class Parser
 
             if ( ! empty( $expression ) )
             {
-                $entities[] = $expression;
+                $expressionSet->appendExpression( $expression, $nextOperator );
 
                 if ( ! empty( $tokens ) )
                 {
@@ -156,89 +158,23 @@ abstract class Parser
                             break;
 
                         case Token::T_OPERATOR_OR:
-                            $entities[] = ExpressionSet::OP_OR;
+                            $nextOperator = ExpressionSet::OP_OR;
                             break;
 
-                        default: // AND
-                            array_unshift( $tokens, $nextToken );
-                            $entities[] = ExpressionSet::OP_AND;
-                            break;
-                    }
-                }
-            }
-        }
-
-        if ( in_array( end( $entities ),
-                       array( ExpressionSet::OP_OR,
-                              ExpressionSet::OP_AND ) ) )
-        {
-            array_pop( $entities );
-        }
-
-        if ( empty( $entities ) )
-        {
-            return null;
-        }
-
-        if ( in_array( ExpressionSet::OP_OR, $entities ) )
-        {
-            $expression = new ExpressionSet( array(), ExpressionSet::OP_OR );
-
-            if ( in_array( ExpressionSet::OP_AND, $entities ) )
-            {
-                $expressions = array();
-                $operator    = ExpressionSet::OP_OR;
-                $entities[]  = ExpressionSet::OP_OR;
-
-                while ( ! empty( $entities ) )
-                {
-                    $currentExpression = array_shift( $entities );
-
-                    switch ( $operator )
-                    {
-                        case ExpressionSet::OP_OR:
-                            $expressions[] = $currentExpression;
-                            break;
-
-                        case ExpressionSet::OP_AND:
-                            $lastExpression = array_pop( $expressions );
-
-                            if ( ! $lastExpression instanceof ExpressionSet ||
-                                 ExpressionSet::OP_AND !== $lastExpression->getOperator() )
-                            {
-                                $lastExpression = new ExpressionSet(
-                                    array( $lastExpression ),
-                                    ExpressionSet::OP_AND
-                                );
-                            }
-
-                            $lastExpression->addExpression( $currentExpression );
-                            $expressions[] = $lastExpression;
+                        case Token::T_OPERATOR_AND:
+                            $nextOperator = ExpressionSet::OP_AND;
                             break;
 
                         default:
-                            break 2;
+                            array_unshift( $tokens, $nextToken );
+                            $nextOperator = ExpressionSet::OP_DEFAULT;
+                            break;
                     }
-
-                    $operator = array_shift( $entities );
                 }
-
-                $expression->addExpressions( $expressions );
-            }
-            else
-            {
-                $expression->addExpressions( $entities );
             }
         }
-        else
-        {
-            $expression = new ExpressionSet(
-                $entities,
-                ExpressionSet::OP_AND
-            );
-        }
 
-        return $expression;
+        return $expressionSet;
     }
 
 }

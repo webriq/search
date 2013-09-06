@@ -71,6 +71,19 @@ class Model implements MapperAwareInterface
     }
 
     /**
+     * Debug search query
+     *
+     * @param   string  $locale
+     * @param   string  $query
+     * @return  string
+     */
+    public function debugQuery( $locale, $query )
+    {
+        return $this->getMapper()
+                    ->debugQuery( $query );
+    }
+
+    /**
      * Get paginator
      *
      * @param   mixed   $where

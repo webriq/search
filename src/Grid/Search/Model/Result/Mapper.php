@@ -542,6 +542,25 @@ class Mapper implements HydratorInterface,
     }
 
     /**
+     * Debug search query
+     *
+     * @param   string  $locale
+     * @param   string  $query
+     * @return  string
+     */
+    public function debugQuery( $locale, $query )
+    {
+        return $this->sql()
+                    ->call(
+                        array( '_common', 'search_to_query' ),
+                        array(
+                            (string) $locale,
+                            (string) $query
+                        )
+                    );
+    }
+
+    /**
      * Get paginator
      *
      * @param   mixed|null  $where

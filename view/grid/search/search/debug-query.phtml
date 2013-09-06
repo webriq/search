@@ -1,0 +1,16 @@
+<div class="paragraph-like search debug-query">
+    <form action="?" method="post">
+        <input type="search" name="query" value="<?= $this->escapeHtmlAttr( $this->query ) ?>" />
+        <input type="submit" />
+    </form>
+    <dl>
+        <dt>Query</dt>
+        <dd><?= $this->escapeHtml( $this->query ) ?></dd>
+        <dt>Parsed: to representation</dt>
+        <dd><?= $this->escapeHtml( $this->toRepresentation ) ?></dd>
+        <dt>Parsed: to query string</dt>
+        <dd><?= $this->escapeHtml( $this->toQueryString ) ?></dd>
+        <dt>Effective query</dt>
+        <dd><?= $this->escapeHtml( $this->effective ) ?></dd>
+    </dl>
+</div>

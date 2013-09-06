@@ -2,6 +2,7 @@
 
 namespace Grid\Search\Controller;
 
+use Grid\Search\Query;
 use Zend\View\Model\JsonModel;
 
 /**
@@ -74,6 +75,27 @@ class SearchController extends AbstractSearchController
     {
         list( $suggestions ) = $this->getSuggestions();
         return new JsonModel( $suggestions );
+    }
+
+    /**
+     * Debug query action
+     */
+    public function debugQuery()
+    {
+        $query  = $this->param( 'query' );
+        $parsed = Query\Parser::parse( $query );
+        $model  = $this->getServiceLocator()
+                       ->get( 'Grid\Search\Model\Result\Model' );
+
+        return array(
+            'query'             => $query,
+            'toRepresentation'  => $parsed->toRepresentation(),
+            'toQueryString'     => $tsquery = $parsed->toQueryString(),
+            'effective'         => $model->debugQuery(
+                (string) $this->locale(),
+                $tsquery
+            ),
+        );
     }
 
 }
