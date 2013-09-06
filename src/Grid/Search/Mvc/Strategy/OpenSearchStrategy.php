@@ -1,6 +1,6 @@
 <?php
 
-namespace Grid\GoogleAnalytics\Mvc\Strategy;
+namespace Grid\Search\Mvc\Strategy;
 
 use Locale;
 use Zend\Mvc\MvcEvent;
