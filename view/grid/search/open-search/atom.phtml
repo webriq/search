@@ -35,23 +35,23 @@ echo '<', '?xml version="1.0" encoding="UTF-8"?', '>', PHP_EOL; ?>
           href="<?= $base, $params ?>"/>
     <link type="application/atom+xml"
           rel="first"
-          href="<?= $base ?>/opensearch/rss.xml<?= $paramp, 0 ?>"/>
+          href="<?= $base ?>/opensearch/atom.xml<?= $paramp, 0 ?>"/>
 <?php if ( $this->page > 0 ): ?>
 
     <link type="application/atom+xml"
           rel="previous"
-          href="<?= $base ?>/opensearch/rss.xml<?= $paramp, $this->page - 1 ?>"/>
+          href="<?= $base ?>/opensearch/atom.xml<?= $paramp, $this->page - 1 ?>"/>
 <?php endif ?>
 <?php if ( $this->page < $maxp ): ?>
 
     <link type="application/atom+xml"
           rel="next"
-          href="<?= $base ?>/opensearch/rss.xml<?= $paramp, $this->page + 1 ?>"/>
+          href="<?= $base ?>/opensearch/atom.xml<?= $paramp, $this->page + 1 ?>"/>
 <?php endif ?>
 
     <link type="application/atom+xml"
           rel="last"
-          href="<?= $base ?>/opensearch/rss.xml<?= $paramp, $maxp ?>"/>
+          href="<?= $base ?>/opensearch/atom.xml<?= $paramp, $maxp ?>"/>
     <entry>
 <?php foreach ( $this->results as $result ): $uri = $result->getUri( true ); ?>
 
