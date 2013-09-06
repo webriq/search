@@ -6,13 +6,13 @@
     <dl>
         <dt>Query</dt>
         <dd><?= $this->escapeHtml( $this->query ) ?></dd>
-        <dt>Parsed query</dt>
-        <dd><?= var_dump( $this->parsed ) ?></dd>
         <dt>Parsed: to representation</dt>
         <dd><?= $this->escapeHtml( $this->toRepresentation ) ?></dd>
         <dt>Parsed: to query string</dt>
         <dd><?= $this->escapeHtml( $this->toQueryString ) ?></dd>
         <dt>Effective query</dt>
         <dd><?= $this->escapeHtml( $this->effective ) ?></dd>
+        <dt>Parsed query</dt>
+        <dd><pre><?php var_dump( $this->parsed ) ?></pre></dd>
     </dl>
 </div>
