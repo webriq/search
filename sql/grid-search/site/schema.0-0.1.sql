@@ -405,6 +405,7 @@ CREATE OR REPLACE FUNCTION "search_suggestion"(
 DECLARE
     "v_type_like"   CHARACTER VARYING;
     "v_query"       CHARACTER VARYING;
+    "v_prefix"      CHARACTER VARYING;
     "v_user_id"     INTEGER             DEFAULT 0;
     "v_group_id"    INTEGER             DEFAULT 0;
 BEGIN
@@ -429,11 +430,18 @@ BEGIN
         RETURN;
     END IF;
 
-    "v_query" = '(^|[^' || "p_wordchars" || '])' || "v_query" || '([' || "p_wordchars" || ']+|[^' || "p_wordchars" || ']+[' || "p_wordchars" || ']+)';
+    "v_query" = regexp_replace( "v_query", '([\(\)\.\[\]\{\}\?\*\+\^\$\\])', '\\\1', 'g' );
+    "v_query" = '(^|[^' || "p_wordchars" || '])' || "v_query" || '([' || "p_wordchars" || ']+|[^' || "p_wordchars" || ']*[^<' || "p_wordchars" || '][' || "p_wordchars" || ']+)';
+    "v_prefix" = regexp_replace( "p_query", '[^' || "p_wordchars" || ']+$', '' );
 
-    RETURN QUERY SELECT "p_query" || regexp_replace(
+    RETURN QUERY SELECT "v_prefix" || regexp_replace(
                             LOWER( ( regexp_matches(
-                                "title" || ' ' || "keywords" || ' ' || "description" || ' ' || "content",
+                                regexp_replace(
+                                    "title" || ' ' || "keywords" || ' ' || "description" || ' ' || "content",
+                                    '<[A-Za-z][^>]*>',
+                                    ' ',
+                                    'g'
+                                ),
                                 "v_query",
                                 'ig'
                             ) )[2] ),
