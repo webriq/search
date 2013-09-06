@@ -80,7 +80,7 @@ class Model implements MapperAwareInterface
     public function debugQuery( $locale, $query )
     {
         return $this->getMapper()
-                    ->debugQuery( $query );
+                    ->debugQuery( $locale, $query );
     }
 
     /**
