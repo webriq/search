@@ -15,12 +15,18 @@
 
     var searchAdded = false,
         addSearch   = function () {
-            if ( ! searchAdded && typeof global.external.AddSearchProvider !== "undefined" ) {
-                global.external.AddSearchProvider(
-                    global.location.protocol + "//" +
+            if ( ! searchAdded
+                && typeof global.external.IsSearchProviderInstalled !== "undefined"
+                && typeof global.external.AddSearchProvider !== "undefined" )
+            {
+                var provider = global.location.protocol + "//" +
                     ( global.location.host ? global.location.host : global.location.hostname ) +
-                    "/app/" + js.core.defaultLocale + "/search/opensearch/description.xml"
-                );
+                    "/app/" + js.core.defaultLocale + "/search/opensearch/description.xml";
+
+                if ( ! global.external.IsSearchProviderInstalled( provider ) )
+                {
+                    global.external.AddSearchProvider( provider );
+                }
             }
 
             searchAdded = true;
