@@ -168,6 +168,14 @@ class Token
                     $query    = substr( $query, 1 );
                     break;
 
+                case 'A':
+                    if ( isset( $query[2] ) && 'N' === $query[1] && 'D' === $query[2] )
+                    {
+                        $tokens[] = new static( substr( $query, 0, 3 ), static::T_OPERATOR_AND );
+                        $query    = substr( $query, 3 );
+                        break;
+                    }
+
                 default:
                     $matches = array();
 

@@ -96,7 +96,7 @@ class ExpressionSet implements ExpressionInterface
             $operator = static::OP_OR;
         }
 
-        if ( static::OP_AND !== $operator || static::OP_OR !== $operator )
+        if ( static::OP_AND !== $operator && static::OP_OR !== $operator )
         {
             $operator = static::OP_DEFAULT;
         }
