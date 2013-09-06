@@ -80,7 +80,7 @@ class SearchController extends AbstractSearchController
     /**
      * Debug query action
      */
-    public function debugQuery()
+    public function debugQueryAction()
     {
         $query  = $this->param( 'query' );
         $parsed = Query\Parser::parse( $query );
