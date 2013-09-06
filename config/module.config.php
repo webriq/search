@@ -224,6 +224,9 @@ return array(
         ),
     ),
     'view_manager' => array(
+        'mvc_strategies' => array(
+            'Grid\Search\Mvc\Strategy\OpenSearchStrategy',
+        ),
         'template_map' => array(
             'grid/paragraph/render/search'  => __DIR__ . '/../view/grid/paragraph/render/search.phtml',
             'grid/search/search/index'      => __DIR__ . '/../view/grid/search/search/index.phtml',
