@@ -8,7 +8,8 @@ $paramp = '?query=' . urlencode( $this->query ) .
 $params = $paramp . ( (int) $this->page );
 echo '<', '?xml version="1.0" encoding="UTF-8"?', '>', PHP_EOL; ?>
 <feed xmlns="http://www.w3.org/2005/Atom"
-      xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/">
+      xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/"
+      xmlns:relevance="http://a9.com/-/opensearch/extensions/relevance/1.0/">
     <id><?= $base ?>/opensearch/atom.xml<?= $params ?></id>
     <title><?= htmlspecialchars( $this->headTitle()->slice( 0 ), ENT_QUOTES ) ?></title>
     <updated><?= date( DATE_ISO8601 ) ?></updated>
@@ -63,6 +64,7 @@ echo '<', '?xml version="1.0" encoding="UTF-8"?', '>', PHP_EOL; ?>
 
             </div>
         </content>
+        <relevance:score><?= (float) $result->rank ?></relevance:score>
 <?php endforeach ?>
 
     </entry>
