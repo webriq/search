@@ -35,9 +35,10 @@ abstract class AbstractSearchController extends AbstractActionController
         $query  = $this->param( 'query', '' );
         $type   = $this->param( 'type', '%' ) ?: '%';
         $all    = (bool) $this->param( 'all', false );
-        $page   = (int) abs( $this->param( 'page', 0 ) );
+        $page   = (int) abs( $this->param( 'page', 1 ) ) ?: 1;
         $items  = min( 25, (int) abs( $this->param( 'items', 10 ) ) ?: 10 );
-        $index  = (int) abs( $this->param( 'page', $page * $items ) ) ?: $page * $items;
+        $cindex = ( $page - 1 ) * $items + 1;
+        $index  = (int) abs( $this->param( 'index', $cindex ) ) ?: $cindex;
         $parsed = Query\Parser::parse( $query );
         $model  = $this->getServiceLocator()
                        ->get( 'Grid\Search\Model\Result\Model' );
@@ -58,7 +59,7 @@ abstract class AbstractSearchController extends AbstractActionController
             'query'     => $parsed->toRepresentation(),
             'count'     => $count = $model->searchCount( $where ),
             'results'   => $count < 1 ? array()
-                        : $model->searchResults( $where, $items, $index ),
+                        : $model->searchResults( $where, $items, $index - 1 ),
         );
     }
 

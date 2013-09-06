@@ -19,8 +19,7 @@ echo '<', '?xml version="1.0" encoding="UTF-8"?', '>', PHP_EOL; ?>
                    rel="search"
                    href="<?= $base ?>/opensearch/description.xml"/>
         <opensearch:Query role="request"
-                          searchTerms="<?= htmlspecialchars( $this->query, ENT_QUOTES ) ?>"
-                          startPage="0"/>
+                          searchTerms="<?= htmlspecialchars( $this->query, ENT_QUOTES ) ?>"/>
 <?php foreach ( $this->results as $result ): $uri = $result->getUri( true ); ?>
 
         <item>

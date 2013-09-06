@@ -84,20 +84,20 @@ echo '<', '?xml version="1.0" encoding="UTF-8"?', '>', PHP_EOL; ?>
 <?php endif ?>
 
     <Url type="text/html"
-         pageOffset="0"
-         indexOffset="0"
+         pageOffset="1"
+         indexOffset="1"
          template="<?= $base ?>?query={searchTerms}&amp;page={startPage?}&amp;items={itemsPerPage?}&amp;index={startIndex?}"/>
     <Url type="application/x-suggestions+xml"
          template="<?= $base ?>/opensearch/suggestions.xml?query={searchTerms}"/>
     <Url type="application/x-suggestions+json"
          template="<?= $base ?>/opensearch/suggestions.json?query={searchTerms}"/>
     <Url type="application/atom+xml"
-         pageOffset="0"
-         indexOffset="0"
+         pageOffset="1"
+         indexOffset="1"
          template="<?= $base ?>/opensearch/atom.xml?query={searchTerms}&amp;page={startPage?}&amp;items={itemsPerPage?}&amp;index={startIndex?}"/>
     <Url type="application/rss+xml"
-         pageOffset="0"
-         indexOffset="0"
+         pageOffset="1"
+         indexOffset="1"
          template="<?= $base ?>/opensearch/rss.xml?query={searchTerms}&amp;page={startPage?}&amp;items={itemsPerPage?}&amp;index={startIndex?}"/>
     <Url type="application/opensearchdescription+xml"
          rel="self"

@@ -19,8 +19,7 @@ echo '<', '?xml version="1.0" encoding="UTF-8"?', '>', PHP_EOL; ?>
     <opensearch:startIndex><?= (int) $this->index ?></opensearch:startIndex>
     <opensearch:itemsPerPage><?= (int) $this->items ?></opensearch:itemsPerPage>
     <opensearch:Query role="request"
-                      searchTerms="<?= htmlspecialchars( $this->query, ENT_QUOTES ) ?>"
-                      startPage="0"/>
+                      searchTerms="<?= htmlspecialchars( $this->query, ENT_QUOTES ) ?>"/>
     <link type="application/opensearchdescription+xml"
           rel="search"
           href="<?= $base ?>/opensearch/description.xml"/>
