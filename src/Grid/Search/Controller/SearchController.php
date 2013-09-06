@@ -87,8 +87,11 @@ class SearchController extends AbstractSearchController
         $model  = $this->getServiceLocator()
                        ->get( 'Grid\Search\Model\Result\Model' );
 
+        $this->paragraphLayout();
+
         return array(
             'query'             => $query,
+            'parsed'            => $parsed,
             'toRepresentation'  => $parsed->toRepresentation(),
             'toQueryString'     => $tsquery = $parsed->toQueryString(),
             'effective'         => $model->debugQuery(

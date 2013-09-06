@@ -6,6 +6,8 @@
     <dl>
         <dt>Query</dt>
         <dd><?= $this->escapeHtml( $this->query ) ?></dd>
+        <dt>Parsed query</dt>
+        <dd><?= var_dump( $this->parsed ) ?></dd>
         <dt>Parsed: to representation</dt>
         <dd><?= $this->escapeHtml( $this->toRepresentation ) ?></dd>
         <dt>Parsed: to query string</dt>
