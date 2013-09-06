@@ -21,28 +21,14 @@ abstract class Parser
     {
         $tokens     = Token::lexer( $query );
         $expression = static::acceptExpressionSet( $tokens, true );
+        $root       = new ExpressionRoot();
 
-        if ( empty( $expression ) )
+        if ( ! empty( $expression ) )
         {
-            return new ExpressionRoot();
+            $root->setExpressionsFrom( $expression );
         }
 
-        $expressions = $expression->getExpressions();
-
-        if ( count( $expressions ) === 1 )
-        {
-            $innerExpression = reset( $expressions );
-
-            if ( $innerExpression instanceof ExpressionSet )
-            {
-                $expression = $innerExpression;
-            }
-        }
-
-        return new ExpressionRoot(
-            $expression->getExpressions(),
-            $expression->getOperator()
-        );
+        return $root;
     }
 
     /**

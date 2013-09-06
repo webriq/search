@@ -151,6 +151,19 @@ class ExpressionSet implements ExpressionInterface
     }
 
     /**
+     * Set expressions from another expression-set
+     *
+     * @param   ExpressionSet $expressionSet
+     * @return  ExpressionSet
+     */
+    public function setExpressionsFrom( ExpressionSet $expressionSet )
+    {
+        $this->operators    = $expressionSet->operators;
+        $this->expressions  = $expressionSet->expressions;
+        return $this;
+    }
+
+    /**
      * @return  bool
      */
     public function isEmpty()
