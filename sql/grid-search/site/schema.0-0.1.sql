@@ -35,8 +35,13 @@ CREATE TABLE "search"
     PRIMARY KEY ( "searchContentId", "locale" )
 );
 
-CREATE INDEX "search_data_idx" ON "search" USING gist (( "title" || ' ' || "keywords" || ' ' || "description" || ' ' || "content" ));
-CREATE INDEX ON "search" USING gist ( "vector" );
+CREATE INDEX
+          ON "search"
+       USING gist ( "vector" );
+
+CREATE INDEX "search_data_idx"
+          ON "search"
+       USING hash ( ( "title" || ' ' || "keywords" || ' ' || "description" || ' ' || "content" ) text_pattern_ops );
 
 --------------------------------------------------------------------------------
 -- function: search_content_update(varchar, int, bool, timestampwtz, timestampwtz, bool, int[], int[])
