@@ -176,6 +176,14 @@ class Token
                         break;
                     }
 
+                case 'O':
+                    if ( isset( $query[1] ) && 'R' === $query[1] )
+                    {
+                        $tokens[] = new static( substr( $query, 0, 2 ), static::T_OPERATOR_OR );
+                        $query    = substr( $query, 2 );
+                        break;
+                    }
+
                 default:
                     $matches = array();
 

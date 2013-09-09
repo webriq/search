@@ -23,7 +23,7 @@ class ExpressionSet implements ExpressionInterface
     /**
      * @const string
      */
-    const OP_DEFAULT = self::OP_OR;
+    const OP_DEFAULT = self::OP_AND;
 
     /**
      * @const string
@@ -57,8 +57,9 @@ class ExpressionSet implements ExpressionInterface
      * @var array
      */
     protected static $operatorToRepresentation = array(
-        self::OP_OR   => ' ',
-        self::OP_AND  => ' & ',
+        self::OP_OR         => '|',
+        self::OP_AND        => '&',
+        self::OP_DEFAULT    => ' ',
     );
 
     /**
