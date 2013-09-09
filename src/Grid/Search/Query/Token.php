@@ -179,7 +179,9 @@ class Token
                 default:
                     $matches = array();
 
-                    if ( preg_match( '/^[' . static::LEXEME_LETTERS . '\']+/u', $query, $matches ) )
+                    if ( preg_match( '/^[' . static::LEXEME_LETTERS
+                                    . '][' . static::LEXEME_LETTERS
+                                    . '\'-]*/u', $query, $matches ) )
                     {
                         $match = $matches[0];
                         $query = substr( $query, strlen( $match ) );
