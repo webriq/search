@@ -38,7 +38,9 @@
         "display-name": {
             "en": "Search Package"
         },
-        "display-description": "",
+        "display-description": {
+            "en": "This package allows you to place a search box on your website(s). The search will be performed in your contents."
+        },
         "modules": {
             "Grid\\Search": "Search"
         }
