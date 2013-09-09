@@ -169,15 +169,16 @@ class Token
                     break;
 
                 case 'A':
-                    if ( isset( $query[2] ) && 'N' === $query[1] && 'D' === $query[2] )
+                case 'O':
+
+                    if ( 'A' === $query[0] && isset( $query[2] ) && 'N' === $query[1] && 'D' === $query[2] )
                     {
                         $tokens[] = new static( substr( $query, 0, 3 ), static::T_OPERATOR_AND );
                         $query    = substr( $query, 3 );
                         break;
                     }
 
-                case 'O':
-                    if ( isset( $query[1] ) && 'R' === $query[1] )
+                    if ( 'O' === $query[0] && isset( $query[1] ) && 'R' === $query[1] )
                     {
                         $tokens[] = new static( substr( $query, 0, 2 ), static::T_OPERATOR_OR );
                         $query    = substr( $query, 2 );
