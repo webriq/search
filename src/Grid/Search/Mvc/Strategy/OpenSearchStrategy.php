@@ -104,10 +104,10 @@ class OpenSearchStrategy implements ListenerAggregateInterface
 
         if ( method_exists( $renderer, 'plugin' ) )
         {
-            /* @var $locale     \Zork\I18n\Locale\Locale */
-            /* @var $siteInfo   \Zork\Db\SiteInfo */
-            /* @var $headLink   \Zend\View\Helper\HeadLink */
-            /* @var $headTitle  \Zork\View\Helper\HeadTitle */
+            /* @var $locale \Zork\I18n\Locale\Locale */
+            /* @var $siteInfo \Zork\Db\SiteInfo */
+            /* @var $headLink \Zend\View\Helper\HeadLink */
+            /* @var $headTitle \Zork\View\Helper\HeadTitle */
             $locale     = $locator->get( 'Locale' );
             $siteInfo   = $locator->get( 'SiteInfo' );
             $headLink   = $renderer->plugin( 'headLink' );
