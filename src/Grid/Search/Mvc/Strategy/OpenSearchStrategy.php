@@ -107,16 +107,20 @@ class OpenSearchStrategy implements ListenerAggregateInterface
             /* @var $locale     \Zork\I18n\Locale\Locale */
             /* @var $siteInfo   \Zork\Db\SiteInfo */
             /* @var $headLink   \Zend\View\Helper\HeadLink */
-            $locale   = $locator->get( 'Locale' );
-            $siteInfo = $locator->get( 'SiteInfo' );
-            $headLink = $renderer->plugin( 'headLink' );
-            $current  = $locale->getCurrent();
-            $href     = 'http://' . $siteInfo->getDomain()
+            /* @var $headTitle  \Zork\View\Helper\HeadTitle */
+            $locale     = $locator->get( 'Locale' );
+            $siteInfo   = $locator->get( 'SiteInfo' );
+            $headLink   = $renderer->plugin( 'headLink' );
+            $headTitle  = $renderer->plugin( 'headLink' );
+            $title      = $headTitle->slice( 0, 1 );
+            $current    = $locale->getCurrent();
+            $href       = 'http://' . $siteInfo->getDomain()
                       . '/app/%s/search/opensearch/description.xml';
 
             $headLink->append( (object) array(
                 'type'      => 'application/opensearchdescription+xml',
                 'rel'       => 'search',
+                'title'     => $title,
                 'href'      => sprintf( $href, $current ),
                 'hreflang'  => static::localeToIso( $current ),
             ) );
@@ -128,6 +132,7 @@ class OpenSearchStrategy implements ListenerAggregateInterface
                     $headLink->append( (object) array(
                         'type'      => 'application/opensearchdescription+xml',
                         'rel'       => 'search',
+                        'title'     => $title,
                         'href'      => sprintf( $href, $availableLocale ),
                         'hreflang'  => static::localeToIso( $availableLocale ),
                     ) );
