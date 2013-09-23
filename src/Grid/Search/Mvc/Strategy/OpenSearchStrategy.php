@@ -111,7 +111,7 @@ class OpenSearchStrategy implements ListenerAggregateInterface
             $locale     = $locator->get( 'Locale' );
             $siteInfo   = $locator->get( 'SiteInfo' );
             $headLink   = $renderer->plugin( 'headLink' );
-            $headTitle  = $renderer->plugin( 'headLink' );
+            $headTitle  = $renderer->plugin( 'headTitle' );
             $title      = $headTitle->slice( 0, 1 );
             $current    = $locale->getCurrent();
             $href       = 'http://' . $siteInfo->getDomain()
