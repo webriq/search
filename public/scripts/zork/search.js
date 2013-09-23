@@ -14,15 +14,22 @@
     }
 
     var searchAdded = false,
-        addSearch   = function () {
+        provider    = global.location.protocol + "//"
+                    + ( global.location.host ? global.location.host : global.location.hostname )
+                    + "/app/" + js.core.defaultLocale + "/search/opensearch/description.xml",
+        showInstall = function () {
             if ( ! searchAdded
                 && typeof global.external.IsSearchProviderInstalled !== "undefined"
                 && typeof global.external.AddSearchProvider !== "undefined" )
             {
-                var provider = global.location.protocol + "//" +
-                    ( global.location.host ? global.location.host : global.location.hostname ) +
-                    "/app/" + js.core.defaultLocale + "/search/opensearch/description.xml";
-
+                return ! global.external.IsSearchProviderInstalled( provider );
+            }
+        },
+        addSearch = function () {
+            if ( ! searchAdded
+                && typeof global.external.IsSearchProviderInstalled !== "undefined"
+                && typeof global.external.AddSearchProvider !== "undefined" )
+            {
                 if ( ! global.external.IsSearchProviderInstalled( provider ) )
                 {
                     global.external.AddSearchProvider( provider );
@@ -82,9 +89,34 @@
     global.Zork.Search.prototype.submit = function ( element )
     {
         element = $( element );
-        element.on( "click", addSearch )
-               .closest( "form" )
-               .on( "submit", addSearch );
+
+        if ( showInstall() )
+        {
+            var isButton = element.is( "button" ),
+                install  = $( isButton ? '<button>' : '<input type="button">' ),
+                label    = js.core.translate( "search.install.label" ),
+                title    = js.core.translate( "search.install.title" );
+
+            if ( isButton )
+            {
+                install.text( label );
+            }
+            else
+            {
+                install.val( label );
+            }
+
+            install.attr( "title", title )
+                   .on( "click", function () {
+                        addSearch();
+                        install.remove();
+                        element.parent()
+                               .inputset();
+                    } );
+
+            element.parent()
+                   .inputset();
+        }
     };
 
     global.Zork.Search.prototype.submit.isElementConstructor = true;
