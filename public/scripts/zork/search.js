@@ -114,7 +114,8 @@
                                .inputset();
                     } );
 
-            element.parent()
+            element.after( install )
+                   .parent()
                    .inputset();
         }
     };
