@@ -19,6 +19,7 @@
                     + "/app/" + js.core.defaultLocale + "/search/opensearch/description.xml",
         showInstall = function () {
             if ( ! searchAdded
+                && typeof global.external !== "undefined"
                 && typeof global.external.IsSearchProviderInstalled !== "undefined"
                 && typeof global.external.AddSearchProvider !== "undefined" )
             {
@@ -27,6 +28,7 @@
         },
         addSearch = function () {
             if ( ! searchAdded
+                && typeof global.external !== "undefined"
                 && typeof global.external.IsSearchProviderInstalled !== "undefined"
                 && typeof global.external.AddSearchProvider !== "undefined" )
             {
