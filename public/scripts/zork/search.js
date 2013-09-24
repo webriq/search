@@ -25,6 +25,8 @@
             {
                 return ! global.external.IsSearchProviderInstalled( provider );
             }
+
+            return false;
         },
         addSearch = function () {
             if ( ! searchAdded
