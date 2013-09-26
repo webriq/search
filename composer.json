@@ -35,6 +35,9 @@
         ]
     },
     "extra": {
+        "display-icon": {
+            "63": "https://raw.github.com/gridguyz/search/%reference%/icons/63x63.png"
+        },
         "display-name": {
             "en": "Search Package"
         },
