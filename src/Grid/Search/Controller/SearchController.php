@@ -4,6 +4,7 @@ namespace Grid\Search\Controller;
 
 use Grid\Search\Query;
 use Zend\View\Model\JsonModel;
+use Grid\Paragraph\View\Model\MetaContent;
 
 /**
  * SearchController
