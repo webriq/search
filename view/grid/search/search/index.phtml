@@ -16,8 +16,6 @@ $paginator = new Paginator\Paginator(
 $paginator->setItemCountPerPage( $this->items )
           ->setCurrentPageNumber( $this->page );
 
-$this->placeholder( 'content' )->captureStart();
-
 ?><div class="paragraph-like search">
     <?= $this->form()->openTag( $this->form ) ?>
 
@@ -72,5 +70,3 @@ $this->placeholder( 'content' )->captureStart();
     <?= $this->form()->closeTag() ?>
 
 </div>
-<?php $this->placeholder( 'content' )->captureEnd(); ?>
-<?= $this->metaContent( 'search.results', (string) $this->placeholder( 'content' ) ) ?>

@@ -65,7 +65,7 @@ class SearchController extends AbstractSearchController
         ) );
 
         $results['form'] = $form;
-        return $results;
+        return new MetaContent( 'search.results', $results );
     }
 
     /**
