@@ -39,10 +39,10 @@
             "63": "https://raw.github.com/gridguyz/search/%reference%/icons/63x63.png"
         },
         "display-name": {
-            "en": "Search Package"
+            "en": "Search"
         },
         "display-description": {
-            "en": "This package allows you to place a search box on your website(s). The search will be performed in your contents."
+            "en": "This APP allows you to place a search box on your website. The search will be performed in your contents."
         },
         "module": "Grid\\Search"
     }
