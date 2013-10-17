@@ -18,6 +18,7 @@ use Zork\Model\Mapper\DbAware\DbSchemaAwareInterface;
 use Zork\Model\Mapper\ReadListMapperInterface;
 use Zork\Iterator\CallbackMapIterator;
 use Zend\Authentication\AuthenticationService;
+use Zork\Authentication\AuthenticationServiceAwareTrait;
 use Grid\Core\Model\ContentUri\Factory as ContentUriFactory;
 use Grid\User\Model\Permissions\Model as PermissionModel;
 
@@ -34,7 +35,8 @@ class Mapper implements HydratorInterface,
 
     use OptionsTrait,
         DbAdapterAwareTrait,
-        DbSchemaAwareTrait;
+        DbSchemaAwareTrait,
+        AuthenticationServiceAwareTrait;
 
     /**
      * Sql-object
@@ -159,19 +161,22 @@ class Mapper implements HydratorInterface,
     /**
      * Constructor
      *
-     * @param   ContentUriFactory   $contentUriFactory
-     * @param   PermissionModel     $userPermissionsModel
-     * @param   Options             $searchOptions
-     * @param   Structure           $structurePrototype
+     * @param   ContentUriFactory       $contentUriFactory
+     * @param   PermissionModel         $userPermissionsModel
+     * @param   AuthenticationService   $authenticationService
+     * @param   Options                 $searchOptions
+     * @param   Structure               $structurePrototype
      */
-    public function __construct( ContentUriFactory  $contentUriFactory,
-                                 PermissionModel    $userPermissionsModel,
-                                 Options            $searchOptions      = null,
-                                 Structure          $structurePrototype = null )
+    public function __construct( ContentUriFactory      $contentUriFactory,
+                                 PermissionModel        $userPermissionsModel,
+                                 AuthenticationService  $authenticationService,
+                                 Options                $searchOptions      = null,
+                                 Structure              $structurePrototype = null )
     {
         $this->contentUriFactory    = $contentUriFactory;
         $this->permissions          = $userPermissionsModel;
-        $this->setSearchOptions( $searchOptions ?: new Options )
+        $this->setAuthenticationService( $authenticationService )
+             ->setSearchOptions( $searchOptions ?: new Options )
              ->setStructurePrototype( $structurePrototype ?: new Structure );
     }
 
@@ -225,7 +230,7 @@ class Mapper implements HydratorInterface,
      */
     protected function getUserData()
     {
-        $auth = new AuthenticationService();
+        $auth = $this->getAuthenticationService();
 
         if ( $auth->hasIdentity() )
         {
