@@ -4,6 +4,7 @@ namespace Grid\Search\Mvc\Strategy;
 
 use Locale;
 use Zend\Mvc\MvcEvent;
+use Zend\Http\Request as HttpRequest;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
 
@@ -97,8 +98,16 @@ class OpenSearchStrategy implements ListenerAggregateInterface
      */
     public function appendOpenSearchToHeadLink( MvcEvent $event )
     {
-        /* @var $renderer \Zend\View\Renderer\PhpRenderer */
+        /* @var $app \Zend\Mvc\Application */
         $app      = $event->getParam( 'application' );
+        $request  = $app->getRequest();
+
+        if ( ! $request instanceof HttpRequest )
+        {
+            return;
+        }
+
+        /* @var $renderer \Zend\View\Renderer\PhpRenderer */
         $locator  = $app->getServiceManager();
         $renderer = $locator->get( 'Zend\View\Renderer\PhpRenderer' );
 
