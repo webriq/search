@@ -1,7 +1,7 @@
 -- insert default values for table: module
 
 INSERT INTO "module" ( "module", "enabled" )
-     VALUES ( 'Grid\Search', TRUE );
+     VALUES ( 'Grid\Search', FALSE );
 
 -- insert search meta-contents: search.results
 
