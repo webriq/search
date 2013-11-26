@@ -172,6 +172,26 @@ class ExpressionSet implements ExpressionInterface
     }
 
     /**
+     * Get child expressions' operators
+     *
+     * @return  string[]
+     */
+    public function getOperators()
+    {
+        return $this->expressions;
+    }
+
+    /**
+     * Get child expressions
+     *
+     * @return  ExpressionInterface[]
+     */
+    public function getExpressions()
+    {
+        return $this->expressions;
+    }
+
+    /**
      * @return  bool
      */
     public function isEmpty()
