@@ -284,7 +284,7 @@ return array(
                             ),
                             'displayInstallOpensearch'  => array(
                                 'spec'  => array(
-                                    'type'      => 'Zork\Form\Element\Text',
+                                    'type'      => 'Zork\Form\Element\Checkbox',
                                     'name'      => 'displayInstallOpensearch',
                                     'options'   => array(
                                         'label'         => 'search.form.paragraph.displayInstallOpensearch',
