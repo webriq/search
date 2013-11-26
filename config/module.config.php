@@ -282,6 +282,17 @@ return array(
                                     ),
                                 ),
                             ),
+                            'displayInstallOpensearch'  => array(
+                                'spec'  => array(
+                                    'type'      => 'Zork\Form\Element\Text',
+                                    'name'      => 'displayInstallOpensearch',
+                                    'options'   => array(
+                                        'label'         => 'search.form.paragraph.displayInstallOpensearch',
+                                        'description'   => 'search.form.paragraph.displayInstallOpensearch.description',
+                                        'required'      => false,
+                                    ),
+                                ),
+                            ),
                         ),
                     ),
                 ),
