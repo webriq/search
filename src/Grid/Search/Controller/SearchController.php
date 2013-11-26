@@ -62,7 +62,7 @@ class SearchController extends AbstractSearchController
             'items' => $results['items'],
             'query' => $results['query'],
             'type'  => $results['type'],
-            'all'   => $results['all'],
+            'all'   => ! empty( $results['all'] ),
         ) );
 
         $results['form'] = $form;

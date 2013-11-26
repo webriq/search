@@ -110,6 +110,7 @@ return array(
     ),
     'form' => array(
         'Grid\Search\Search' => array(
+            'type'      => 'Grid\Search\Form\Search',
             'elements'  => array(
                 'query' => array(
                     'spec' => array(
@@ -180,6 +181,7 @@ return array(
             ),
         ),
         'Grid\Search\Paragraph' => array(
+            'type'      => 'Grid\Search\Form\Search',
             'elements'  => array(
                 'query' => array(
                     'spec' => array(
