@@ -179,6 +179,68 @@ return array(
                 ),
             ),
         ),
+        'Grid\Search\Paragraph' => array(
+            'elements'  => array(
+                'query' => array(
+                    'spec' => array(
+                        'type'      => 'Zork\Form\Element\Search',
+                        'name'      => 'query',
+                        'options'   => array(
+                            'label'     => false,
+                            'required'  => true,
+                        ),
+                        'attributes'    => array(
+                            'data-js-type'  => 'js.search.query',
+                        ),
+                    ),
+                ),
+                'type' => array(
+                    'spec' => array(
+                        'type'      => 'Zork\Form\Element\Hidden',
+                        'name'      => 'type',
+                        'options'   => array(
+                            'label'     => false,
+                        ),
+                        'attributes'    => array(
+                            'value'     => '%',
+                        ),
+                    ),
+                ),
+                'all' => array(
+                    'spec' => array(
+                        'type'      => 'Zork\Form\Element\Checkbox',
+                        'name'      => 'all',
+                        'options'   => array(
+                            'label'         => false,
+                            'required'      => false,
+                            'label_enable'  => 'search.form.all',
+                        ),
+                    ),
+                ),
+                'items' => array(
+                    'spec' => array(
+                        'type'      => 'Zork\Form\Element\Hidden',
+                        'name'      => 'items',
+                        'options'   => array(
+                            'label'     => false,
+                        ),
+                        'attributes'    => array(
+                            'value'     => 10,
+                        ),
+                    ),
+                ),
+                'submit' => array(
+                    'spec' => array(
+                        'type'      => 'Zork\Form\Element\Submit',
+                        'name'      => 'submit',
+                        'attributes'    => array(
+                            'value'         => 'search.form.submit',
+                            'data-js-type'  => 'js.search.submit',
+                        ),
+                    ),
+                ),
+            ),
+        ),
         'Grid\Paragraph\CreateWizard\Start' => array(
             'elements'  => array(
                 'type'  => array(

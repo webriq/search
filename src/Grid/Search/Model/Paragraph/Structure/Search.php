@@ -34,10 +34,12 @@ class Search extends AbstractLeaf
      */
     public function getForm( $action )
     {
-        return $this->getServiceLocator()
-                    ->get( 'Form' )
-                    ->create( 'Grid\Search\Search' )
-                    ->setAttribute( 'action', $action );;
+        $form = $this->getServiceLocator()
+                     ->get( 'Form' )
+                     ->create( 'Grid\Search\Paragraph' );
+
+        $form->setAttribute( 'action', $action );
+        return $form;
     }
 
 }
