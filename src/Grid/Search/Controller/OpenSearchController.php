@@ -20,12 +20,17 @@ class OpenSearchController extends AbstractSearchController
      */
     protected function getSuggestionsData()
     {
+        static $defaultPorts = array(
+            'http'  => 80,
+            'https' => 443,
+        );
+
         $links  = array();
         $url    = $this->url();
         $locale = (string) $this->locale();
-        $srvLoc = $this->getServiceLocator();
-        $info   = $srvLoc->get( 'SiteInfo' );
-        $domain = $info->getDomain();
+        $info   = $this->getServiceLocator()
+                       ->get( 'SiteInfo' );
+        $base   = $info->getSubdomainUrl( '', '/' );
 
         list( $suggestions,
               $query,
@@ -34,7 +39,7 @@ class OpenSearchController extends AbstractSearchController
 
         foreach ( $suggestions as $suggestion )
         {
-            $links[] = 'http://' . $domain . $url->fromRoute(
+            $links[] = $base . $url->fromRoute(
                 'Grid\Search\Search\Index',
                 array(
                     'locale'    => $locale,

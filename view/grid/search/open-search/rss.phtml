@@ -1,6 +1,5 @@
 <?php
-$domain = 'http://' . $this->domain( '' );
-$base   = $domain . '/app/' . $this->locale() . '/search';
+$base   = $this->domain( '', '/app/' . $this->locale() . '/search' );
 $params = '?query=' . urlencode( $this->query ) .
           '&amp;items=' . ( (int) $this->items ) .
           '&amp;page=' . ( (int) $this->page );

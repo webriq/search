@@ -123,8 +123,9 @@ class OpenSearchStrategy implements ListenerAggregateInterface
             $headTitle  = $renderer->plugin( 'headTitle' );
             $title      = $headTitle->slice( 0, 1 );
             $current    = $locale->getCurrent();
-            $href       = 'http://' . $siteInfo->getDomain()
-                        . '/app/%s/search/opensearch/description.xml';
+            $href       = $siteInfo->getSubdomainUrl(
+                '', '/app/%s/search/opensearch/description.xml'
+            );
 
             $headLink->append( (object) array(
                 'type'      => 'application/opensearchdescription+xml',

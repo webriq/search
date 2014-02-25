@@ -1,6 +1,5 @@
 <?php
-$domain = 'http://' . $this->domain( '' );
-$base   = $domain . '/app/' . $this->locale() . '/search';
+$base   = $this->domain( '', '/app/' . $this->locale() . '/search' );
 $maxp   = (int) ceil( $this->count / $this->items ) - 1;
 $paramp = '?query=' . urlencode( $this->query ) .
           '&amp;items=' . ( (int) $this->items ) .

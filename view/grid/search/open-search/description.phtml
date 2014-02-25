@@ -64,7 +64,7 @@ foreach ( $this->headLink()->getContainer() as $link )
     }
 }
 
-$domain         = 'http://' . $this->domain( '' );
+$domain         = rtrim( $this->domain( '', true ), '/' );
 $base           = $domain . '/app/' . $this->locale() . '/search';
 $keywords       = trim( preg_replace( '/[\s,;\\.]+/', ' ', $keywords ) );
 $description    = trim( preg_replace( '/\s+/', ' ', $description ) );
